@@ -3,7 +3,7 @@
   "info": {
     "title": "AntiPublic.One API",
     "description": "Official API documentation for AntiPublic MYRZ.\n\nLinks:\n+ Download [AntiPublic](https://antipublic.one/dl/AntiPublic.zip).\n+ AntiPublic [Management](https://zelenka.guru/account/antipublic).",
-    "version": "1.0.4"
+    "version": "1.0.5"
   },
   "servers": [
     {
@@ -45,7 +45,7 @@
           "200": {
             "description": "Successful response",
             "content": {
-              "application/json": {
+              "text/plain": {
                 "schema": {
                   "$ref": "#/components/schemas/CountLinesPlain"
                 }
@@ -174,11 +174,15 @@
             "in": "query"
           },
           {
-            "description": "Upload private rows to AntiPublic db. Can be [**1**, **0**, **true**, **false**, **yes**, **no**].",
+            "description": "Upload private rows to AntiPublic db.",
             "required": false,
             "schema": {
               "title": "Insert",
-              "type": "string"
+              "type": "string",
+              "enum": [
+                "yes",
+                "no"
+              ]
             },
             "name": "insert",
             "in": "query"
@@ -336,7 +340,7 @@
         }
       },
       "CountLinesPlain": {
-        "type": "integer"
+        "type": "string"
       },
       "Version": {
         "type": "object",
