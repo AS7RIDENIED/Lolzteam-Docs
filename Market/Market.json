@@ -3,7 +3,7 @@
   "info": {
     "title": "Lolzteam Public API: Market",
     "description": "\n[Forum API](https://docs.api.zelenka.guru/?forum)\n\n\n**API free libraries**\n\n\n+ [Node.js](https://github.com/NztForum/node-lzt) \n+ [Python](https://github.com/AS7RIDENIED/Lolzteam_Python_Api)\n+ [C#](https://github.com/fanidamn/LolzMarketAPI)\n\n**Rate limit**\n\n\n+ 20 requests per minute (3 seconds delay between per request)\nIf you exceed the limit, the response code 429 will be returned to you.\n\n**Authorization**\n\n\nFor using this api you need to create API Client and get Access Token with **market** scope.\n\n**Content-Type**\n\napplication/x-www-form-urlencoded.\n\nYou can import the API into Postman using [this](https://docs.api.zelenka.guru/swagger/market.json) file.\n\n**Is for free access?**\n\nTo use the market api, you need to have 200 sympathies, or you can purchase monthly subscription [here](https://zelenka.guru/account/upgrades).",
-    "version": "pre 1.1.0"
+    "version": "1.1.0"
   },
   "servers": [
     {
@@ -123,7 +123,7 @@
             "schema": {
               "title": "Rt",
               "description": "Has community ban.",
-              "$ref": "#/components/schemas/YesNoNoMatter"
+              "$ref": "#/components/schemas/YesNoNoMatterModel"
             }
           },
           {
@@ -136,7 +136,7 @@
             "schema": {
               "title": "Trade Ban",
               "description": "Has lifetime trade ban.",
-              "$ref": "#/components/schemas/YesNoNoMatter"
+              "$ref": "#/components/schemas/YesNoNoMatterModel"
             }
           },
           {
@@ -149,7 +149,7 @@
             "schema": {
               "title": "Trade Limit",
               "description": "Has temporary trade limit.",
-              "$ref": "#/components/schemas/YesNoNoMatter"
+              "$ref": "#/components/schemas/YesNoNoMatterModel"
             }
           },
           {
@@ -162,7 +162,7 @@
             "schema": {
               "title": "Prime",
               "description": "Has Prime in CS2.",
-              "$ref": "#/components/schemas/YesNoNoMatter"
+              "$ref": "#/components/schemas/YesNoNoMatterModel"
             }
           },
           {
@@ -189,7 +189,7 @@
             "schema": {
               "title": "Limit",
               "description": "Has 5 $ limit.",
-              "$ref": "#/components/schemas/YesNoNoMatter"
+              "$ref": "#/components/schemas/YesNoNoMatterModel"
             }
           },
           {
@@ -202,7 +202,7 @@
             "schema": {
               "title": "Mafile",
               "description": "Has .mafile (Steam Guard Authenticator).",
-              "$ref": "#/components/schemas/YesNoNoMatter"
+              "$ref": "#/components/schemas/YesNoNoMatterModel"
             }
           },
           {
@@ -228,7 +228,7 @@
             "explode": true,
             "schema": {
               "title": "Reg Period",
-              "$ref": "#/components/schemas/DatePeriod"
+              "$ref": "#/components/schemas/DatePeriodModel"
             }
           },
           {
@@ -322,14 +322,14 @@
           {
             "name": "no_vac",
             "in": "query",
-            "description": "Has no VAC ban. Can be [**yes**, **no**, **nomatter**].",
+            "description": "Has no VAC ban.",
             "required": false,
             "style": "form",
             "explode": true,
             "schema": {
               "title": "No Vac",
               "description": "Has no VAC ban.",
-              "$ref": "#/components/schemas/YesNoNoMatter"
+              "$ref": "#/components/schemas/YesNoNoMatterModel"
             }
           },
           {
@@ -929,7 +929,7 @@
             "style": "form",
             "explode": true,
             "schema": {
-              "$ref": "#/components/schemas/DatePeriod"
+              "$ref": "#/components/schemas/DatePeriodModel"
             }
           },
           {
@@ -955,13 +955,7 @@
             "explode": true,
             "schema": {
               "title": "Last Trans Date Period Later",
-              "type": "string",
-              "enum": [
-                "day",
-                "month",
-                "year"
-              ],
-              "description": "In what notation is time measured."
+              "$ref": "#/components/schemas/DatePeriodModel"
             }
           },
           {
@@ -1116,12 +1110,12 @@
           {
             "name": "email_type[]",
             "in": "query",
-            "description": "Email type. Can be [**market**, **autoreg**, **native**, **no_market**, **no**].",
+            "description": "Email type.",
             "required": false,
             "style": "form",
             "explode": true,
             "schema": {
-              "$ref": "#/components/schemas/ItemEmailType",
+              "$ref": "#/components/schemas/ItemEmailTypeModel",
               "items": {
                 "type": "string",
                 "enum": [
@@ -1156,18 +1150,18 @@
             "schema": {
               "title": "Auction",
               "description": "Auction.",
-              "$ref": "#/components/schemas/YesNoNoMatter"
+              "$ref": "#/components/schemas/YesNoNoMatterModel"
             }
           },
           {
             "name": "origin[]",
             "in": "query",
-            "description": "List of account origins. Can be [**brute**, **fishing**, **stealer**, **personal**, **resale**, **autoreg**].",
+            "description": "List of account origins.",
             "required": false,
             "style": "form",
             "explode": true,
             "schema": {
-              "$ref": "#/components/schemas/ItemOrigin"
+              "$ref": "#/components/schemas/ItemOriginModel"
             }
           },
           {
@@ -1178,7 +1172,7 @@
             "style": "form",
             "explode": true,
             "schema": {
-              "$ref": "#/components/schemas/ItemNotOrigin"
+              "$ref": "#/components/schemas/ItemNotOriginModel"
             }
           },
           {
@@ -1254,7 +1248,7 @@
             "style": "form",
             "explode": true,
             "schema": {
-              "$ref": "#/components/schemas/ItemOrder"
+              "$ref": "#/components/schemas/ItemOrderModel"
             }
           }
         ],
@@ -1416,7 +1410,7 @@
             "schema": {
               "title": "Change Email",
               "description": "Can change email.",
-              "$ref": "#/components/schemas/YesNoNoMatter"
+              "$ref": "#/components/schemas/YesNoNoMatterModel"
             }
           },
           {
@@ -1456,7 +1450,7 @@
             "schema": {
               "title": "Bp",
               "description": "Has Battle Pass.",
-              "$ref": "#/components/schemas/YesNoNoMatter"
+              "$ref": "#/components/schemas/YesNoNoMatterModel"
             }
           },
           {
@@ -1552,7 +1546,7 @@
             "style": "form",
             "explode": true,
             "schema": {
-              "$ref": "#/components/schemas/DatePeriod"
+              "$ref": "#/components/schemas/DatePeriodModel"
             }
           },
           {
@@ -1578,7 +1572,7 @@
             "schema": {
               "title": "Xbox Linkable",
               "description": "Can be linked to Xbox.",
-              "$ref": "#/components/schemas/YesNoNoMatter"
+              "$ref": "#/components/schemas/YesNoNoMatterModel"
             }
           },
           {
@@ -1591,7 +1585,7 @@
             "schema": {
               "title": "Psn Linkable",
               "description": "Can be linked to PSN.",
-              "$ref": "#/components/schemas/YesNoNoMatter"
+              "$ref": "#/components/schemas/YesNoNoMatterModel"
             }
           },
           {
@@ -1617,7 +1611,7 @@
             "schema": {
               "title": "Temp Email",
               "description": "Access to market temp mail.",
-              "$ref": "#/components/schemas/YesNoNoMatter"
+              "$ref": "#/components/schemas/YesNoNoMatterModel"
             }
           },
           {
@@ -1667,7 +1661,7 @@
             "style": "form",
             "explode": true,
             "schema": {
-              "$ref": "#/components/schemas/ItemEmailType",
+              "$ref": "#/components/schemas/ItemEmailTypeModel",
               "items": {
                 "type": "string",
                 "enum": [
@@ -1702,7 +1696,7 @@
             "schema": {
               "title": "Auction",
               "description": "Auction.",
-              "$ref": "#/components/schemas/YesNoNoMatter"
+              "$ref": "#/components/schemas/YesNoNoMatterModel"
             }
           },
           {
@@ -1713,7 +1707,7 @@
             "style": "form",
             "explode": true,
             "schema": {
-              "$ref": "#/components/schemas/ItemOrigin"
+              "$ref": "#/components/schemas/ItemOriginModel"
             }
           },
           {
@@ -1724,7 +1718,7 @@
             "style": "form",
             "explode": true,
             "schema": {
-              "$ref": "#/components/schemas/ItemNotOrigin"
+              "$ref": "#/components/schemas/ItemNotOriginModel"
             }
           },
           {
@@ -1800,7 +1794,7 @@
             "style": "form",
             "explode": true,
             "schema": {
-              "$ref": "#/components/schemas/ItemOrder"
+              "$ref": "#/components/schemas/ItemOrderModel"
             }
           }
         ],
@@ -1976,7 +1970,7 @@
               "title": "Tel",
               "type": "string",
               "description": "Has linked mobile.",
-              "$ref": "#/components/schemas/YesNoNoMatter"
+              "$ref": "#/components/schemas/YesNoNoMatterModel"
             }
           },
           {
@@ -1990,7 +1984,7 @@
               "title": "Email",
               "type": "string",
               "description": "Has linked email.",
-              "$ref": "#/components/schemas/YesNoNoMatter"
+              "$ref": "#/components/schemas/YesNoNoMatterModel"
             }
           },
           {
@@ -2004,7 +1998,7 @@
               "title": "Tfa",
               "type": "string",
               "description": "Has enabled 2FA.",
-              "$ref": "#/components/schemas/YesNoNoMatter"
+              "$ref": "#/components/schemas/YesNoNoMatterModel"
             }
           },
           {
@@ -2046,7 +2040,7 @@
               "title": "Token Auth Only",
               "type": "string",
               "description": "Login into account by token only.",
-              "$ref": "#/components/schemas/YesNoNoMatter"
+              "$ref": "#/components/schemas/YesNoNoMatterModel"
             }
           },
           {
@@ -2232,7 +2226,7 @@
             "explode": true,
             "schema": {
               "title": "Reg period",
-              "$ref": "#/components/schemas/DatePeriod"
+              "$ref": "#/components/schemas/DatePeriodModel"
             }
           },
           {
@@ -2330,7 +2324,7 @@
               "title": "Auction",
               "type": "string",
               "description": "Auction.",
-              "$ref": "#/components/schemas/YesNoNoMatter"
+              "$ref": "#/components/schemas/YesNoNoMatterModel"
             }
           },
           {
@@ -2341,7 +2335,7 @@
             "style": "form",
             "explode": true,
             "schema": {
-              "$ref": "#/components/schemas/ItemOrigin"
+              "$ref": "#/components/schemas/ItemOriginModel"
             }
           },
           {
@@ -2352,7 +2346,7 @@
             "style": "form",
             "explode": true,
             "schema": {
-              "$ref": "#/components/schemas/ItemNotOrigin"
+              "$ref": "#/components/schemas/ItemNotOriginModel"
             }
           },
           {
@@ -2428,7 +2422,7 @@
             "style": "form",
             "explode": true,
             "schema": {
-              "$ref": "#/components/schemas/ItemOrder"
+              "$ref": "#/components/schemas/ItemOrderModel"
             }
           }
         ],
@@ -2470,7 +2464,7 @@
             "schema": {
               "title": "Email",
               "description": "Has linked email.",
-              "$ref": "#/components/schemas/YesNoNoMatter"
+              "$ref": "#/components/schemas/YesNoNoMatterModel"
             }
           },
           {
@@ -2483,7 +2477,7 @@
             "schema": {
               "title": "Tel",
               "description": "Has linked mobile.",
-              "$ref": "#/components/schemas/YesNoNoMatter"
+              "$ref": "#/components/schemas/YesNoNoMatterModel"
             }
           },
           {
@@ -2531,7 +2525,7 @@
             "schema": {
               "title": "Ea",
               "description": "Has linked external accounts.",
-              "$ref": "#/components/schemas/YesNoNoMatter"
+              "$ref": "#/components/schemas/YesNoNoMatterModel"
             }
           },
           {
@@ -2721,7 +2715,7 @@
             "style": "form",
             "explode": true,
             "schema": {
-              "$ref": "#/components/schemas/ItemEmailType",
+              "$ref": "#/components/schemas/ItemEmailTypeModel",
               "items": {
                 "type": "string",
                 "enum": [
@@ -2755,29 +2749,29 @@
             "schema": {
               "title": "Auction",
               "description": "Auction.",
-              "$ref": "#/components/schemas/YesNoNoMatter"
+              "$ref": "#/components/schemas/YesNoNoMatterModel"
             }
           },
           {
             "name": "origin[]",
             "in": "query",
-            "description": "List of account origins. Can be [**brute**, **fishing**, **stealer**, **personal**, **resale**, **autoreg**].",
+            "description": "List of account origins.",
             "required": false,
             "style": "form",
             "explode": true,
             "schema": {
-              "$ref": "#/components/schemas/ItemOrigin"
+              "$ref": "#/components/schemas/ItemOriginModel"
             }
           },
           {
             "name": "not_origin[]",
             "in": "query",
-            "description": "List of account origins that won't be included. Can be [**brute**, **fishing**, **stealer**, **personal**, **resale**, **autoreg**].",
+            "description": "List of account origins that won't be included.",
             "required": false,
             "style": "form",
             "explode": true,
             "schema": {
-              "$ref": "#/components/schemas/ItemNotOrigin"
+              "$ref": "#/components/schemas/ItemNotOriginModel"
             }
           },
           {
@@ -2853,7 +2847,7 @@
             "style": "form",
             "explode": true,
             "schema": {
-              "$ref": "#/components/schemas/YesNoNoMatter"
+              "$ref": "#/components/schemas/YesNoNoMatterModel"
             }
           }
         ],
@@ -3153,14 +3147,14 @@
           {
             "name": "rank_type",
             "in": "query",
-            "description": "Rank type. Can be [**ranked**, **ranked_ready**, **unrated**].",
+            "description": "Rank type.",
             "required": false,
             "style": "form",
             "explode": true,
             "schema": {
               "title": "Rank Type",
               "type": "string",
-              "description": "Rank type. Can be [**ranked**, **ranked_ready**, **unrated**].",
+              "description": "Rank type.",
               "enum": [
                 "ranked",
                 "ranked_ready",
@@ -3256,7 +3250,7 @@
             "schema": {
               "title": "Email",
               "description": "Has linked email.",
-              "$ref": "#/components/schemas/YesNoNoMatter"
+              "$ref": "#/components/schemas/YesNoNoMatterModel"
             }
           },
           {
@@ -3269,7 +3263,7 @@
             "schema": {
               "title": "Tel",
               "description": "Has linked mobile.",
-              "$ref": "#/components/schemas/YesNoNoMatter"
+              "$ref": "#/components/schemas/YesNoNoMatterModel"
             }
           },
           {
@@ -3282,7 +3276,7 @@
             "schema": {
               "title": "Changeable Email",
               "description": "Can change email.",
-              "$ref": "#/components/schemas/YesNoNoMatter"
+              "$ref": "#/components/schemas/YesNoNoMatterModel"
             }
           },
           {
@@ -3332,7 +3326,7 @@
             "style": "form",
             "explode": true,
             "schema": {
-              "$ref": "#/components/schemas/ItemEmailType",
+              "$ref": "#/components/schemas/ItemEmailTypeModel",
               "items": {
                 "type": "string",
                 "enum": [
@@ -3366,7 +3360,7 @@
             "schema": {
               "title": "Auction",
               "description": "Auction.",
-              "$ref": "#/components/schemas/YesNoNoMatter"
+              "$ref": "#/components/schemas/YesNoNoMatterModel"
             }
           },
           {
@@ -3380,7 +3374,7 @@
               "title": "Origin",
               "type": "array",
               "description": "List of account origins.",
-              "$ref": "#/components/schemas/ItemOrigin"
+              "$ref": "#/components/schemas/ItemOriginModel"
             }
           },
           {
@@ -3391,7 +3385,7 @@
             "style": "form",
             "explode": true,
             "schema": {
-              "$ref": "#/components/schemas/ItemNotOrigin"
+              "$ref": "#/components/schemas/ItemNotOriginModel"
             }
           },
           {
@@ -3467,7 +3461,7 @@
             "style": "form",
             "explode": true,
             "schema": {
-              "$ref": "#/components/schemas/ItemOrder"
+              "$ref": "#/components/schemas/ItemOrderModel"
             }
           }
         ],
@@ -3771,7 +3765,7 @@
             "schema": {
               "title": "Tel",
               "description": "Has linked mobile.",
-              "$ref": "#/components/schemas/YesNoNoMatter"
+              "$ref": "#/components/schemas/YesNoNoMatterModel"
             }
           },
           {
@@ -3784,7 +3778,7 @@
             "schema": {
               "title": "Mail",
               "description": "Has confirmed email.",
-              "$ref": "#/components/schemas/YesNoNoMatter"
+              "$ref": "#/components/schemas/YesNoNoMatterModel"
             }
           },
           {
@@ -3834,7 +3828,7 @@
             "style": "form",
             "explode": true,
             "schema": {
-              "$ref": "#/components/schemas/ItemEmailType",
+              "$ref": "#/components/schemas/ItemEmailTypeModel",
               "items": {
                 "type": "string",
                 "enum": [
@@ -3868,7 +3862,7 @@
             "schema": {
               "title": "Auction",
               "description": "Auction.",
-              "$ref": "#/components/schemas/YesNoNoMatter"
+              "$ref": "#/components/schemas/YesNoNoMatterModel"
             }
           },
           {
@@ -3879,7 +3873,7 @@
             "style": "form",
             "explode": true,
             "schema": {
-              "$ref": "#/components/schemas/ItemOrigin"
+              "$ref": "#/components/schemas/ItemOriginModel"
             }
           },
           {
@@ -3890,7 +3884,7 @@
             "style": "form",
             "explode": true,
             "schema": {
-              "$ref": "#/components/schemas/ItemNotOrigin"
+              "$ref": "#/components/schemas/ItemNotOriginModel"
             }
           },
           {
@@ -3966,7 +3960,7 @@
             "style": "form",
             "explode": true,
             "schema": {
-              "$ref": "#/components/schemas/ItemOrder"
+              "$ref": "#/components/schemas/ItemOrderModel"
             }
           }
         ],
@@ -4008,7 +4002,7 @@
             "schema": {
               "title": "Spam",
               "description": "Has a spam ban.",
-              "$ref": "#/components/schemas/YesNoNoMatter"
+              "$ref": "#/components/schemas/YesNoNoMatterModel"
             }
           },
           {
@@ -4022,7 +4016,7 @@
               "title": "Password",
               "type": "string",
               "description": "Has a cloud password.",
-              "$ref": "#/components/schemas/YesNoNoMatter"
+              "$ref": "#/components/schemas/YesNoNoMatterModel"
             }
           },
           {
@@ -4035,7 +4029,7 @@
             "schema": {
               "title": "Premium",
               "description": "Has a premium subscription.",
-              "$ref": "#/components/schemas/YesNoNoMatter"
+              "$ref": "#/components/schemas/YesNoNoMatterModel"
             }
           },
           {
@@ -4301,7 +4295,7 @@
               "title": "Auction",
               "type": "string",
               "description": "Auction.",
-              "$ref": "#/components/schemas/YesNoNoMatter"
+              "$ref": "#/components/schemas/YesNoNoMatterModel"
             }
           },
           {
@@ -4312,7 +4306,7 @@
             "style": "form",
             "explode": true,
             "schema": {
-              "$ref": "#/components/schemas/ItemOrigin"
+              "$ref": "#/components/schemas/ItemOriginModel"
             }
           },
           {
@@ -4323,7 +4317,7 @@
             "style": "form",
             "explode": true,
             "schema": {
-              "$ref": "#/components/schemas/ItemNotOrigin"
+              "$ref": "#/components/schemas/ItemNotOriginModel"
             }
           },
           {
@@ -4399,7 +4393,7 @@
             "style": "form",
             "explode": true,
             "schema": {
-              "$ref": "#/components/schemas/ItemOrder"
+              "$ref": "#/components/schemas/ItemOrderModel"
             }
           }
         ],
@@ -4629,7 +4623,7 @@
             "style": "form",
             "explode": true,
             "schema": {
-              "$ref": "#/components/schemas/ItemEmailType",
+              "$ref": "#/components/schemas/ItemEmailTypeModel",
               "items": {
                 "type": "string",
                 "enum": [
@@ -4663,7 +4657,7 @@
             "schema": {
               "title": "Auction",
               "description": "Auction.",
-              "$ref": "#/components/schemas/YesNoNoMatter"
+              "$ref": "#/components/schemas/YesNoNoMatterModel"
             }
           },
           {
@@ -4674,7 +4668,7 @@
             "style": "form",
             "explode": true,
             "schema": {
-              "$ref": "#/components/schemas/ItemOrigin"
+              "$ref": "#/components/schemas/ItemOriginModel"
             }
           },
           {
@@ -4685,7 +4679,7 @@
             "style": "form",
             "explode": true,
             "schema": {
-              "$ref": "#/components/schemas/ItemNotOrigin"
+              "$ref": "#/components/schemas/ItemNotOriginModel"
             }
           },
           {
@@ -4761,7 +4755,7 @@
             "style": "form",
             "explode": true,
             "schema": {
-              "$ref": "#/components/schemas/ItemOrder"
+              "$ref": "#/components/schemas/ItemOrderModel"
             }
           }
         ],
@@ -4906,7 +4900,7 @@
               "title": "Xbox Connected",
               "type": "string",
               "description": "Xbox connected to account.",
-              "$ref": "#/components/schemas/YesNoNoMatter"
+              "$ref": "#/components/schemas/YesNoNoMatterModel"
             }
           },
           {
@@ -4920,7 +4914,7 @@
               "title": "Steam Connected",
               "type": "string",
               "description": "Steam connected to account.",
-              "$ref": "#/components/schemas/YesNoNoMatter"
+              "$ref": "#/components/schemas/YesNoNoMatterModel"
             }
           },
           {
@@ -4963,7 +4957,7 @@
             "explode": true,
             "schema": {
               "title": "Subscription Period",
-              "$ref": "#/components/schemas/DatePeriod"
+              "$ref": "#/components/schemas/DatePeriodModel"
             }
           },
           {
@@ -5027,7 +5021,7 @@
             "style": "form",
             "explode": true,
             "schema": {
-              "$ref": "#/components/schemas/ItemEmailType",
+              "$ref": "#/components/schemas/ItemEmailTypeModel",
               "items": {
                 "type": "string",
                 "enum": [
@@ -5062,7 +5056,7 @@
               "title": "Auction",
               "type": "string",
               "description": "Auction.",
-              "$ref": "#/components/schemas/YesNoNoMatter"
+              "$ref": "#/components/schemas/YesNoNoMatterModel"
             }
           },
           {
@@ -5073,7 +5067,7 @@
             "style": "form",
             "explode": true,
             "schema": {
-              "$ref": "#/components/schemas/ItemOrigin"
+              "$ref": "#/components/schemas/ItemOriginModel"
             }
           },
           {
@@ -5084,7 +5078,7 @@
             "style": "form",
             "explode": true,
             "schema": {
-              "$ref": "#/components/schemas/ItemNotOrigin"
+              "$ref": "#/components/schemas/ItemNotOriginModel"
             }
           },
           {
@@ -5160,7 +5154,7 @@
             "style": "form",
             "explode": true,
             "schema": {
-              "$ref": "#/components/schemas/ItemOrder"
+              "$ref": "#/components/schemas/ItemOrderModel"
             }
           }
         ],
@@ -5202,7 +5196,7 @@
             "schema": {
               "title": "Tel",
               "description": "Has linked mobile.",
-              "$ref": "#/components/schemas/YesNoNoMatter"
+              "$ref": "#/components/schemas/YesNoNoMatterModel"
             }
           },
           {
@@ -5523,7 +5517,7 @@
             "style": "form",
             "explode": true,
             "schema": {
-              "$ref": "#/components/schemas/ItemEmailType",
+              "$ref": "#/components/schemas/ItemEmailTypeModel",
               "items": {
                 "type": "string",
                 "enum": [
@@ -5557,7 +5551,7 @@
             "schema": {
               "title": "Auction",
               "description": "Auction.",
-              "$ref": "#/components/schemas/YesNoNoMatter"
+              "$ref": "#/components/schemas/YesNoNoMatterModel"
             }
           },
           {
@@ -5568,7 +5562,7 @@
             "style": "form",
             "explode": true,
             "schema": {
-              "$ref": "#/components/schemas/ItemOrigin"
+              "$ref": "#/components/schemas/ItemOriginModel"
             }
           },
           {
@@ -5579,7 +5573,7 @@
             "style": "form",
             "explode": true,
             "schema": {
-              "$ref": "#/components/schemas/ItemNotOrigin"
+              "$ref": "#/components/schemas/ItemNotOriginModel"
             }
           },
           {
@@ -5655,7 +5649,7 @@
             "style": "form",
             "explode": true,
             "schema": {
-              "$ref": "#/components/schemas/ItemOrder"
+              "$ref": "#/components/schemas/ItemOrderModel"
             }
           }
         ],
@@ -5697,7 +5691,7 @@
             "schema": {
               "title": "Tel",
               "description": "Has linked mobile.",
-              "$ref": "#/components/schemas/YesNoNoMatter"
+              "$ref": "#/components/schemas/YesNoNoMatterModel"
             }
           },
           {
@@ -6014,12 +6008,12 @@
           {
             "name": "email_type[]",
             "in": "query",
-            "description": "Email type. Can be [**market**, **autoreg**, **native**, **no**].",
+            "description": "Email type.",
             "required": false,
             "style": "form",
             "explode": true,
             "schema": {
-              "$ref": "#/components/schemas/ItemEmailType",
+              "$ref": "#/components/schemas/ItemEmailTypeModel",
               "items": {
                 "type": "string",
                 "enum": [
@@ -6054,7 +6048,7 @@
               "title": "Auction",
               "type": "string",
               "description": "Auction.",
-              "$ref": "#/components/schemas/YesNoNoMatter"
+              "$ref": "#/components/schemas/YesNoNoMatterModel"
             }
           },
           {
@@ -6065,7 +6059,7 @@
             "style": "form",
             "explode": true,
             "schema": {
-              "$ref": "#/components/schemas/ItemOrigin"
+              "$ref": "#/components/schemas/ItemOriginModel"
             }
           },
           {
@@ -6076,7 +6070,7 @@
             "style": "form",
             "explode": true,
             "schema": {
-              "$ref": "#/components/schemas/ItemNotOrigin"
+              "$ref": "#/components/schemas/ItemNotOriginModel"
             }
           },
           {
@@ -6152,7 +6146,7 @@
             "style": "form",
             "explode": true,
             "schema": {
-              "$ref": "#/components/schemas/ItemOrder"
+              "$ref": "#/components/schemas/ItemOrderModel"
             }
           }
         ],
@@ -6211,7 +6205,7 @@
               "title": "Change Email",
               "type": "string",
               "description": "You can change email.",
-              "$ref": "#/components/schemas/YesNoNoMatter"
+              "$ref": "#/components/schemas/YesNoNoMatterModel"
             }
           },
           {
@@ -6287,7 +6281,7 @@
             "style": "form",
             "explode": true,
             "schema": {
-              "$ref": "#/components/schemas/ItemEmailType",
+              "$ref": "#/components/schemas/ItemEmailTypeModel",
               "items": {
                 "type": "string",
                 "enum": [
@@ -6323,7 +6317,7 @@
               "title": "Auction",
               "type": "string",
               "description": "Auction.",
-              "$ref": "#/components/schemas/YesNoNoMatter"
+              "$ref": "#/components/schemas/YesNoNoMatterModel"
             }
           },
           {
@@ -6334,7 +6328,7 @@
             "style": "form",
             "explode": true,
             "schema": {
-              "$ref": "#/components/schemas/ItemOrigin"
+              "$ref": "#/components/schemas/ItemOriginModel"
             }
           },
           {
@@ -6345,7 +6339,7 @@
             "style": "form",
             "explode": true,
             "schema": {
-              "$ref": "#/components/schemas/ItemNotOrigin"
+              "$ref": "#/components/schemas/ItemNotOriginModel"
             }
           },
           {
@@ -6421,7 +6415,7 @@
             "style": "form",
             "explode": true,
             "schema": {
-              "$ref": "#/components/schemas/ItemOrder"
+              "$ref": "#/components/schemas/ItemOrderModel"
             }
           }
         ],
@@ -6542,7 +6536,7 @@
             "style": "form",
             "explode": true,
             "schema": {
-              "$ref": "#/components/schemas/ItemEmailType",
+              "$ref": "#/components/schemas/ItemEmailTypeModel",
               "items": {
                 "type": "string",
                 "enum": [
@@ -6576,7 +6570,7 @@
             "schema": {
               "title": "Auction",
               "description": "Auction.",
-              "$ref": "#/components/schemas/YesNoNoMatter"
+              "$ref": "#/components/schemas/YesNoNoMatterModel"
             }
           },
           {
@@ -6587,7 +6581,7 @@
             "style": "form",
             "explode": true,
             "schema": {
-              "$ref": "#/components/schemas/ItemOrigin"
+              "$ref": "#/components/schemas/ItemOriginModel"
             }
           },
           {
@@ -6598,7 +6592,7 @@
             "style": "form",
             "explode": true,
             "schema": {
-              "$ref": "#/components/schemas/ItemNotOrigin"
+              "$ref": "#/components/schemas/ItemNotOriginModel"
             }
           },
           {
@@ -6674,7 +6668,7 @@
             "style": "form",
             "explode": true,
             "schema": {
-              "$ref": "#/components/schemas/ItemOrder"
+              "$ref": "#/components/schemas/ItemOrderModel"
             }
           }
         ],
@@ -6795,7 +6789,7 @@
             "schema": {
               "title": "Auction",
               "description": "Auction.",
-              "$ref": "#/components/schemas/YesNoNoMatter"
+              "$ref": "#/components/schemas/YesNoNoMatterModel"
             }
           },
           {
@@ -6806,7 +6800,7 @@
             "style": "form",
             "explode": true,
             "schema": {
-              "$ref": "#/components/schemas/ItemOrigin"
+              "$ref": "#/components/schemas/ItemOriginModel"
             }
           },
           {
@@ -6817,7 +6811,7 @@
             "style": "form",
             "explode": true,
             "schema": {
-              "$ref": "#/components/schemas/ItemNotOrigin"
+              "$ref": "#/components/schemas/ItemNotOriginModel"
             }
           },
           {
@@ -6893,7 +6887,7 @@
             "style": "form",
             "explode": true,
             "schema": {
-              "$ref": "#/components/schemas/ItemOrder"
+              "$ref": "#/components/schemas/ItemOrderModel"
             }
           }
         ],
@@ -7062,7 +7056,7 @@
             "style": "form",
             "explode": true,
             "schema": {
-              "$ref": "#/components/schemas/ItemEmailType",
+              "$ref": "#/components/schemas/ItemEmailTypeModel",
               "items": {
                 "type": "string",
                 "enum": [
@@ -7096,7 +7090,7 @@
             "schema": {
               "title": "Auction",
               "description": "Auction.",
-              "$ref": "#/components/schemas/YesNoNoMatter"
+              "$ref": "#/components/schemas/YesNoNoMatterModel"
             }
           },
           {
@@ -7107,7 +7101,7 @@
             "style": "form",
             "explode": true,
             "schema": {
-              "$ref": "#/components/schemas/ItemOrigin"
+              "$ref": "#/components/schemas/ItemOriginModel"
             }
           },
           {
@@ -7118,7 +7112,7 @@
             "style": "form",
             "explode": true,
             "schema": {
-              "$ref": "#/components/schemas/ItemNotOrigin"
+              "$ref": "#/components/schemas/ItemNotOriginModel"
             }
           },
           {
@@ -7194,7 +7188,7 @@
             "style": "form",
             "explode": true,
             "schema": {
-              "$ref": "#/components/schemas/ItemOrder"
+              "$ref": "#/components/schemas/ItemOrderModel"
             }
           }
         ],
@@ -7418,7 +7412,7 @@
             "schema": {
               "title": "Phone Verified",
               "description": "Has verified mobile.",
-              "$ref": "#/components/schemas/YesNoNoMatter"
+              "$ref": "#/components/schemas/YesNoNoMatterModel"
             }
           },
           {
@@ -7431,7 +7425,7 @@
             "schema": {
               "title": "Email Verified",
               "description": "Has verified email.",
-              "$ref": "#/components/schemas/YesNoNoMatter"
+              "$ref": "#/components/schemas/YesNoNoMatterModel"
             }
           },
           {
@@ -7444,7 +7438,7 @@
             "schema": {
               "title": "Premium",
               "description": "Has premium.",
-              "$ref": "#/components/schemas/YesNoNoMatter"
+              "$ref": "#/components/schemas/YesNoNoMatterModel"
             }
           },
           {
@@ -7494,7 +7488,7 @@
             "style": "form",
             "explode": true,
             "schema": {
-              "$ref": "#/components/schemas/ItemEmailType",
+              "$ref": "#/components/schemas/ItemEmailTypeModel",
               "items": {
                 "type": "string",
                 "enum": [
@@ -7528,7 +7522,7 @@
             "schema": {
               "title": "Auction",
               "description": "Auction.",
-              "$ref": "#/components/schemas/YesNoNoMatter"
+              "$ref": "#/components/schemas/YesNoNoMatterModel"
             }
           },
           {
@@ -7539,7 +7533,7 @@
             "style": "form",
             "explode": true,
             "schema": {
-              "$ref": "#/components/schemas/ItemOrigin"
+              "$ref": "#/components/schemas/ItemOriginModel"
             }
           },
           {
@@ -7550,7 +7544,7 @@
             "style": "form",
             "explode": true,
             "schema": {
-              "$ref": "#/components/schemas/ItemNotOrigin"
+              "$ref": "#/components/schemas/ItemNotOriginModel"
             }
           },
           {
@@ -7626,7 +7620,7 @@
             "style": "form",
             "explode": true,
             "schema": {
-              "$ref": "#/components/schemas/ItemOrder"
+              "$ref": "#/components/schemas/ItemOrderModel"
             }
           }
         ],
@@ -7668,7 +7662,7 @@
             "schema": {
               "title": "Tel",
               "description": "Has linked mobile.",
-              "$ref": "#/components/schemas/YesNoNoMatter"
+              "$ref": "#/components/schemas/YesNoNoMatterModel"
             }
           },
           {
@@ -7681,7 +7675,7 @@
             "schema": {
               "title": "Nitro",
               "description": "Has Nitro.",
-              "$ref": "#/components/schemas/YesNoNoMatter"
+              "$ref": "#/components/schemas/YesNoNoMatterModel"
             }
           },
           {
@@ -7694,7 +7688,7 @@
             "schema": {
               "title": "Billing",
               "description": "Has billing.",
-              "$ref": "#/components/schemas/YesNoNoMatter"
+              "$ref": "#/components/schemas/YesNoNoMatterModel"
             }
           },
           {
@@ -7707,7 +7701,7 @@
             "schema": {
               "title": "Gifts",
               "description": "Has gifts.",
-              "$ref": "#/components/schemas/YesNoNoMatter"
+              "$ref": "#/components/schemas/YesNoNoMatterModel"
             }
           },
           {
@@ -7720,7 +7714,7 @@
             "schema": {
               "title": "Quarantined",
               "description": "Is quarantined.",
-              "$ref": "#/components/schemas/YesNoNoMatter"
+              "$ref": "#/components/schemas/YesNoNoMatterModel"
             }
           },
           {
@@ -7796,7 +7790,7 @@
             "explode": true,
             "schema": {
               "title": "Reg Period",
-              "$ref": "#/components/schemas/DatePeriod"
+              "$ref": "#/components/schemas/DatePeriodModel"
             }
           },
           {
@@ -7903,7 +7897,7 @@
             "style": "form",
             "explode": true,
             "schema": {
-              "$ref": "#/components/schemas/ItemEmailType",
+              "$ref": "#/components/schemas/ItemEmailTypeModel",
               "items": {
                 "type": "string",
                 "enum": [
@@ -7937,7 +7931,7 @@
             "schema": {
               "title": "Auction",
               "description": "Auction.",
-              "$ref": "#/components/schemas/YesNoNoMatter"
+              "$ref": "#/components/schemas/YesNoNoMatterModel"
             }
           },
           {
@@ -7948,18 +7942,18 @@
             "style": "form",
             "explode": true,
             "schema": {
-              "$ref": "#/components/schemas/ItemOrigin"
+              "$ref": "#/components/schemas/ItemOriginModel"
             }
           },
           {
             "name": "not_origin[]",
             "in": "query",
-            "description": "List of account origins that won't be included. Can be [**brute**, **fishing**, **stealer**, **personal**, **resale**, **autoreg**].",
+            "description": "List of account origins that won't be included.",
             "required": false,
             "style": "form",
             "explode": true,
             "schema": {
-              "$ref": "#/components/schemas/ItemNotOrigin"
+              "$ref": "#/components/schemas/ItemNotOriginModel"
             }
           },
           {
@@ -8035,7 +8029,7 @@
             "style": "form",
             "explode": true,
             "schema": {
-              "$ref": "#/components/schemas/ItemOrder"
+              "$ref": "#/components/schemas/ItemOrderModel"
             }
           }
         ],
@@ -8077,7 +8071,7 @@
             "schema": {
               "title": "Tel",
               "description": "Has linked mobile.",
-              "$ref": "#/components/schemas/YesNoNoMatter"
+              "$ref": "#/components/schemas/YesNoNoMatterModel"
             }
           },
           {
@@ -8202,7 +8196,7 @@
             "schema": {
               "title": "Cookie Login",
               "description": "Login by cookies.",
-              "$ref": "#/components/schemas/YesNoNoMatter"
+              "$ref": "#/components/schemas/YesNoNoMatterModel"
             }
           },
           {
@@ -8215,7 +8209,7 @@
             "schema": {
               "title": "Verified",
               "description": "Has a verified badge.",
-              "$ref": "#/components/schemas/YesNoNoMatter"
+              "$ref": "#/components/schemas/YesNoNoMatterModel"
             }
           },
           {
@@ -8265,7 +8259,7 @@
             "style": "form",
             "explode": true,
             "schema": {
-              "$ref": "#/components/schemas/ItemEmailType",
+              "$ref": "#/components/schemas/ItemEmailTypeModel",
               "items": {
                 "type": "string",
                 "enum": [
@@ -8299,7 +8293,7 @@
             "schema": {
               "title": "Auction",
               "description": "Auction.",
-              "$ref": "#/components/schemas/YesNoNoMatter"
+              "$ref": "#/components/schemas/YesNoNoMatterModel"
             }
           },
           {
@@ -8310,7 +8304,7 @@
             "style": "form",
             "explode": true,
             "schema": {
-              "$ref": "#/components/schemas/ItemOrigin"
+              "$ref": "#/components/schemas/ItemOriginModel"
             }
           },
           {
@@ -8321,7 +8315,7 @@
             "style": "form",
             "explode": true,
             "schema": {
-              "$ref": "#/components/schemas/ItemNotOrigin"
+              "$ref": "#/components/schemas/ItemNotOriginModel"
             }
           },
           {
@@ -8397,7 +8391,7 @@
             "style": "form",
             "explode": true,
             "schema": {
-              "$ref": "#/components/schemas/ItemOrder"
+              "$ref": "#/components/schemas/ItemOrderModel"
             }
           }
         ],
@@ -8439,7 +8433,7 @@
             "schema": {
               "title": "Tel",
               "description": "Has linked mobile.",
-              "$ref": "#/components/schemas/YesNoNoMatter"
+              "$ref": "#/components/schemas/YesNoNoMatterModel"
             }
           },
           {
@@ -8484,7 +8478,7 @@
             "schema": {
               "title": "Cookies",
               "description": "Login by cookies.",
-              "$ref": "#/components/schemas/YesNoNoMatter"
+              "$ref": "#/components/schemas/YesNoNoMatterModel"
             }
           },
           {
@@ -8497,7 +8491,7 @@
             "schema": {
               "title": "Login Without Cookies",
               "description": "Login without cookies.",
-              "$ref": "#/components/schemas/YesNoNoMatter"
+              "$ref": "#/components/schemas/YesNoNoMatterModel"
             }
           },
           {
@@ -8578,7 +8572,7 @@
             "explode": true,
             "schema": {
               "title": "Reg Period",
-              "$ref": "#/components/schemas/DatePeriod"
+              "$ref": "#/components/schemas/DatePeriodModel"
             }
           },
           {
@@ -8628,7 +8622,7 @@
             "style": "form",
             "explode": true,
             "schema": {
-              "$ref": "#/components/schemas/ItemEmailType",
+              "$ref": "#/components/schemas/ItemEmailTypeModel",
               "items": {
                 "type": "string",
                 "enum": [
@@ -8662,7 +8656,7 @@
             "schema": {
               "title": "Auction",
               "description": "Auction.",
-              "$ref": "#/components/schemas/YesNoNoMatter"
+              "$ref": "#/components/schemas/YesNoNoMatterModel"
             }
           },
           {
@@ -8673,7 +8667,7 @@
             "style": "form",
             "explode": true,
             "schema": {
-              "$ref": "#/components/schemas/ItemOrigin"
+              "$ref": "#/components/schemas/ItemOriginModel"
             }
           },
           {
@@ -8684,7 +8678,7 @@
             "style": "form",
             "explode": true,
             "schema": {
-              "$ref": "#/components/schemas/ItemNotOrigin"
+              "$ref": "#/components/schemas/ItemNotOriginModel"
             }
           },
           {
@@ -8760,7 +8754,7 @@
             "style": "form",
             "explode": true,
             "schema": {
-              "$ref": "#/components/schemas/ItemOrder"
+              "$ref": "#/components/schemas/ItemOrderModel"
             }
           }
         ],
@@ -8864,7 +8858,7 @@
             "schema": {
               "title": "Edit Btag",
               "description": "Can edit BattleTag.",
-              "$ref": "#/components/schemas/YesNoNoMatter"
+              "$ref": "#/components/schemas/YesNoNoMatterModel"
             }
           },
           {
@@ -8877,20 +8871,20 @@
             "schema": {
               "title": "Changeable Fn",
               "description": "Can edit full name.",
-              "$ref": "#/components/schemas/YesNoNoMatter"
+              "$ref": "#/components/schemas/YesNoNoMatterModel"
             }
           },
           {
             "name": "real_id",
             "in": "query",
-            "description": "Read name. Can be [**yes**, **no**, **nomatter**].",
+            "description": "Read name.",
             "required": false,
             "style": "form",
             "explode": true,
             "schema": {
               "title": "Real Id",
               "type": "string",
-              "description": "Read name. Can be [**yes**, **no**, **nomatter**]."
+              "description": "Read name."
             }
           },
           {
@@ -8903,7 +8897,7 @@
             "schema": {
               "title": "Tel",
               "description": "Has linked mobile.",
-              "$ref": "#/components/schemas/YesNoNoMatter"
+              "$ref": "#/components/schemas/YesNoNoMatterModel"
             }
           },
           {
@@ -8916,7 +8910,7 @@
             "schema": {
               "title": "Parent Control",
               "description": "Has enabled parent control.",
-              "$ref": "#/components/schemas/YesNoNoMatter"
+              "$ref": "#/components/schemas/YesNoNoMatterModel"
             }
           },
           {
@@ -8929,7 +8923,7 @@
             "schema": {
               "title": "Cookies",
               "description": "Login by cookies.",
-              "$ref": "#/components/schemas/YesNoNoMatter"
+              "$ref": "#/components/schemas/YesNoNoMatterModel"
             }
           },
           {
@@ -9035,7 +9029,7 @@
             "style": "form",
             "explode": true,
             "schema": {
-              "$ref": "#/components/schemas/ItemEmailType",
+              "$ref": "#/components/schemas/ItemEmailTypeModel",
               "items": {
                 "type": "string",
                 "enum": [
@@ -9069,7 +9063,7 @@
               "title": "Auction",
               "type": "string",
               "description": "Auction.",
-              "$ref": "#/components/schemas/YesNoNoMatter"
+              "$ref": "#/components/schemas/YesNoNoMatterModel"
             }
           },
           {
@@ -9080,7 +9074,7 @@
             "style": "form",
             "explode": true,
             "schema": {
-              "$ref": "#/components/schemas/ItemOrigin"
+              "$ref": "#/components/schemas/ItemOriginModel"
             }
           },
           {
@@ -9091,7 +9085,7 @@
             "style": "form",
             "explode": true,
             "schema": {
-              "$ref": "#/components/schemas/ItemNotOrigin"
+              "$ref": "#/components/schemas/ItemNotOriginModel"
             }
           },
           {
@@ -9167,7 +9161,7 @@
             "style": "form",
             "explode": true,
             "schema": {
-              "$ref": "#/components/schemas/ItemOrder"
+              "$ref": "#/components/schemas/ItemOrderModel"
             }
           }
         ],
@@ -9250,14 +9244,14 @@
           {
             "name": "subscription_period",
             "in": "query",
-            "description": "In what notation is time measured. Can be [**day**, **month**, **year**].",
+            "description": "In what notation is time measured.",
             "required": false,
             "style": "form",
             "explode": true,
             "schema": {
               "title": "Subscription Period",
               "description": "In what notation is time measured.",
-              "$ref": "#/components/schemas/DatePeriod"
+              "$ref": "#/components/schemas/DatePeriodModel"
             }
           },
           {
@@ -9270,7 +9264,7 @@
             "schema": {
               "title": "Renewable",
               "description": "Is renewable enabled.",
-              "$ref": "#/components/schemas/YesNoNoMatter"
+              "$ref": "#/components/schemas/YesNoNoMatterModel"
             }
           },
           {
@@ -9315,14 +9309,14 @@
           {
             "name": "auction",
             "in": "query",
-            "description": "Auction. Can be [**yes**, **no**, **nomatter**].",
+            "description": "Auction.",
             "required": false,
             "style": "form",
             "explode": true,
             "schema": {
               "title": "Auction",
               "type": "string",
-              "description": "Auction. Can be [**yes**, **no**, **nomatter**]."
+              "description": "Auction."
             }
           },
           {
@@ -9333,7 +9327,7 @@
             "style": "form",
             "explode": true,
             "schema": {
-              "$ref": "#/components/schemas/ItemOrigin"
+              "$ref": "#/components/schemas/ItemOriginModel"
             }
           },
           {
@@ -9344,7 +9338,7 @@
             "style": "form",
             "explode": true,
             "schema": {
-              "$ref": "#/components/schemas/ItemNotOrigin"
+              "$ref": "#/components/schemas/ItemNotOriginModel"
             }
           },
           {
@@ -9420,7 +9414,7 @@
             "style": "form",
             "explode": true,
             "schema": {
-              "$ref": "#/components/schemas/ItemOrder"
+              "$ref": "#/components/schemas/ItemOrderModel"
             }
           }
         ],
@@ -9496,7 +9490,7 @@
             "explode": true,
             "schema": {
               "title": "Subscription Period",
-              "$ref": "#/components/schemas/DatePeriod"
+              "$ref": "#/components/schemas/DatePeriodModel"
             }
           },
           {
@@ -9509,7 +9503,7 @@
             "schema": {
               "title": "Renewable",
               "description": "Is auto renewal enabled.",
-              "$ref": "#/components/schemas/YesNoNoMatter"
+              "$ref": "#/components/schemas/YesNoNoMatterModel"
             }
           },
           {
@@ -9561,7 +9555,7 @@
             "schema": {
               "title": "Auction",
               "description": "Auction.",
-              "$ref": "#/components/schemas/YesNoNoMatter"
+              "$ref": "#/components/schemas/YesNoNoMatterModel"
             }
           },
           {
@@ -9572,7 +9566,7 @@
             "style": "form",
             "explode": true,
             "schema": {
-              "$ref": "#/components/schemas/ItemOrigin"
+              "$ref": "#/components/schemas/ItemOriginModel"
             }
           },
           {
@@ -9583,7 +9577,7 @@
             "style": "form",
             "explode": true,
             "schema": {
-              "$ref": "#/components/schemas/ItemNotOrigin"
+              "$ref": "#/components/schemas/ItemNotOriginModel"
             }
           },
           {
@@ -9659,7 +9653,7 @@
             "style": "form",
             "explode": true,
             "schema": {
-              "$ref": "#/components/schemas/ItemOrder"
+              "$ref": "#/components/schemas/ItemOrderModel"
             }
           }
         ],
@@ -9733,7 +9727,7 @@
             "schema": {
               "title": "Family",
               "description": "Has family subscription.",
-              "$ref": "#/components/schemas/YesNoNoMatter"
+              "$ref": "#/components/schemas/YesNoNoMatterModel"
             }
           },
           {
@@ -9746,7 +9740,7 @@
             "schema": {
               "title": "Family",
               "description": "Has family manager permissions.",
-              "$ref": "#/components/schemas/YesNoNoMatter"
+              "$ref": "#/components/schemas/YesNoNoMatterModel"
             }
           },
           {
@@ -9801,7 +9795,7 @@
             "schema": {
               "title": "Subscription Period",
               "description": "In what notation is time measured.",
-              "$ref": "#/components/schemas/DatePeriod"
+              "$ref": "#/components/schemas/DatePeriodModel"
             }
           },
           {
@@ -9814,7 +9808,7 @@
             "schema": {
               "title": "Recurring",
               "description": "Is auto renewal enabled.",
-              "$ref": "#/components/schemas/YesNoNoMatter"
+              "$ref": "#/components/schemas/YesNoNoMatterModel"
             }
           },
           {
@@ -9827,7 +9821,7 @@
             "schema": {
               "title": "Trial",
               "description": "Trial subscription.",
-              "$ref": "#/components/schemas/YesNoNoMatter"
+              "$ref": "#/components/schemas/YesNoNoMatterModel"
             }
           },
           {
@@ -9903,7 +9897,7 @@
             "schema": {
               "title": "Auction",
               "description": "Auction.",
-              "$ref": "#/components/schemas/YesNoNoMatter"
+              "$ref": "#/components/schemas/YesNoNoMatterModel"
             }
           },
           {
@@ -9914,7 +9908,7 @@
             "style": "form",
             "explode": true,
             "schema": {
-              "$ref": "#/components/schemas/ItemOrigin"
+              "$ref": "#/components/schemas/ItemOriginModel"
             }
           },
           {
@@ -9925,7 +9919,7 @@
             "style": "form",
             "explode": true,
             "schema": {
-              "$ref": "#/components/schemas/ItemNotOrigin"
+              "$ref": "#/components/schemas/ItemNotOriginModel"
             }
           },
           {
@@ -10001,7 +9995,7 @@
             "style": "form",
             "explode": true,
             "schema": {
-              "$ref": "#/components/schemas/ItemOrder"
+              "$ref": "#/components/schemas/ItemOrderModel"
             }
           }
         ],
@@ -10099,7 +10093,7 @@
             "schema": {
               "title": "Tel",
               "description": "Has linked mobile.",
-              "$ref": "#/components/schemas/YesNoNoMatter"
+              "$ref": "#/components/schemas/YesNoNoMatterModel"
             }
           },
           {
@@ -10164,7 +10158,7 @@
             "schema": {
               "title": "Auction",
               "description": "Auction.",
-              "$ref": "#/components/schemas/YesNoNoMatter"
+              "$ref": "#/components/schemas/YesNoNoMatterModel"
             }
           },
           {
@@ -10175,7 +10169,7 @@
             "style": "form",
             "explode": true,
             "schema": {
-              "$ref": "#/components/schemas/ItemOrigin"
+              "$ref": "#/components/schemas/ItemOriginModel"
             }
           },
           {
@@ -10186,7 +10180,7 @@
             "style": "form",
             "explode": true,
             "schema": {
-              "$ref": "#/components/schemas/ItemNotOrigin"
+              "$ref": "#/components/schemas/ItemNotOriginModel"
             }
           },
           {
@@ -10262,7 +10256,7 @@
             "style": "form",
             "explode": true,
             "schema": {
-              "$ref": "#/components/schemas/ItemOrder"
+              "$ref": "#/components/schemas/ItemOrderModel"
             }
           }
         ],
@@ -10304,7 +10298,7 @@
             "schema": {
               "title": "Brand",
               "description": "Is brand account.",
-              "$ref": "#/components/schemas/YesNoNoMatter"
+              "$ref": "#/components/schemas/YesNoNoMatterModel"
             }
           },
           {
@@ -10317,7 +10311,7 @@
             "schema": {
               "title": "Monetization",
               "description": "Has monetization.",
-              "$ref": "#/components/schemas/YesNoNoMatter"
+              "$ref": "#/components/schemas/YesNoNoMatterModel"
             }
           },
           {
@@ -10330,7 +10324,7 @@
             "schema": {
               "title": "Artist",
               "description": "Has status artist.",
-              "$ref": "#/components/schemas/YesNoNoMatter"
+              "$ref": "#/components/schemas/YesNoNoMatterModel"
             }
           },
           {
@@ -10343,7 +10337,7 @@
             "schema": {
               "title": "Verified",
               "description": "Has verified.",
-              "$ref": "#/components/schemas/YesNoNoMatter"
+              "$ref": "#/components/schemas/YesNoNoMatterModel"
             }
           },
           {
@@ -10357,7 +10351,7 @@
               "title": "Password",
               "type": "string",
               "description": "Has password.",
-              "$ref": "#/components/schemas/YesNoNoMatter"
+              "$ref": "#/components/schemas/YesNoNoMatterModel"
             }
           },
           {
@@ -10466,7 +10460,7 @@
             "explode": true,
             "schema": {
               "title": "Reg Period",
-              "$ref": "#/components/schemas/DatePeriod"
+              "$ref": "#/components/schemas/DatePeriodModel"
             }
           },
           {
@@ -10563,7 +10557,7 @@
             "schema": {
               "title": "Auction",
               "description": "Auction.",
-              "$ref": "#/components/schemas/YesNoNoMatter"
+              "$ref": "#/components/schemas/YesNoNoMatterModel"
             }
           },
           {
@@ -10574,7 +10568,7 @@
             "style": "form",
             "explode": true,
             "schema": {
-              "$ref": "#/components/schemas/ItemOrigin"
+              "$ref": "#/components/schemas/ItemOriginModel"
             }
           },
           {
@@ -10585,7 +10579,7 @@
             "style": "form",
             "explode": true,
             "schema": {
-              "$ref": "#/components/schemas/ItemNotOrigin"
+              "$ref": "#/components/schemas/ItemNotOriginModel"
             }
           },
           {
@@ -10661,7 +10655,7 @@
             "style": "form",
             "explode": true,
             "schema": {
-              "$ref": "#/components/schemas/ItemOrder"
+              "$ref": "#/components/schemas/ItemOrderModel"
             }
           }
         ],
@@ -10766,13 +10760,13 @@
             "style": "form",
             "explode": true,
             "schema": {
-              "$ref": "#/components/schemas/ItemOrder"
+              "$ref": "#/components/schemas/ItemOrderModel"
             }
           },
           {
             "name": "show",
             "in": "query",
-            "description": "Account status. Can be [**active**, **paid**, **deleted** or **awaiting**].",
+            "description": "Account status.",
             "required": false,
             "style": "form",
             "explode": true,
@@ -10817,7 +10811,7 @@
           "Accounts list"
         ],
         "summary": "Get All Purchased Accounts",
-        "description": "Accounts category.\n+ 1 - Steam\n+ 2 - VK\n+ 3 - Origin\n+ 4 - Warface\n+ 5 - Uplay\n+ 7 - Social Club\n+ 9 - Fortnite\n+ 10 - Instagram\n+ 11 - Battlenet\n+ 12 - Epic Games\n+ 13 - Valorant\n+ 14 - World Of Tanks\n+ 16 - WOT Blitz\n+ 15 - Supercell\n+ 17 - Genshin Impact\n+ 18 - Escape From Tarkov\n+ 19 - VPN\n+ 20 - Tiktok\n+ 22 - Discord\n+ 23 - Cinema\n+ 24 - Telegram\n+ 25 - Youtube\n+ 26 - Spotify\n+ 27 - War Thunder",
+        "description": "Accounts category.",
         "operationId": "accountsList.getPurchased",
         "parameters": [
           {
@@ -10836,7 +10830,7 @@
           {
             "name": "category_id",
             "in": "query",
-            "description": "Accounts category.",
+            "description": "Accounts category.\n+ 1 - Steam\n+ 2 - VK\n+ 3 - Origin\n+ 4 - Warface\n+ 5 - Uplay\n+ 7 - Social Club\n+ 9 - Fortnite\n+ 10 - Instagram\n+ 11 - Battlenet\n+ 12 - Epic Games\n+ 13 - Valorant\n+ 14 - World Of Tanks\n+ 16 - WOT Blitz\n+ 15 - Supercell\n+ 17 - Genshin Impact\n+ 18 - Escape From Tarkov\n+ 19 - VPN\n+ 20 - Tiktok\n+ 22 - Discord\n+ 23 - Cinema\n+ 24 - Telegram\n+ 25 - Youtube\n+ 26 - Spotify\n+ 27 - War Thunder",
             "required": false,
             "style": "form",
             "explode": true,
@@ -10893,7 +10887,7 @@
             "style": "form",
             "explode": true,
             "schema": {
-              "$ref": "#/components/schemas/ItemOrder"
+              "$ref": "#/components/schemas/ItemOrderModel"
             }
           },
           {
@@ -10976,7 +10970,7 @@
             "style": "form",
             "explode": true,
             "schema": {
-              "$ref": "#/components/schemas/ItemOrder"
+              "$ref": "#/components/schemas/ItemOrderModel"
             }
           },
           {
@@ -11038,7 +11032,7 @@
             "style": "form",
             "explode": true,
             "schema": {
-              "$ref": "#/components/schemas/ItemOrder"
+              "$ref": "#/components/schemas/ItemOrderModel"
             }
           },
           {
@@ -11297,6 +11291,7 @@
               "title": "Categoryname",
               "type": "string",
               "description": "Category name.",
+              "default": "steam",
               "enum": [
                 "steam",
                 "fortnite",
@@ -11376,6 +11371,7 @@
               "title": "Categoryname",
               "type": "string",
               "description": "Category name.",
+              "default": "steam",
               "enum": [
                 "steam",
                 "fortnite",
@@ -11672,7 +11668,7 @@
           {
             "name": "app_id",
             "in": "query",
-            "description": "Application id.",
+            "description": "Application id.\n+ 730 - CS2\n+ 578080 - PUBG\n+ 753 - Steam\n+ 570 - Dota 2\n+ 440 - Team Fortress 2\n+ 252490 - Rust\n+ 304930 - Unturned\n+ 232090 - Killing Floor 2\n+ 322330 - Don't Starve Together",
             "required": true,
             "style": "form",
             "explode": true,
@@ -12741,8 +12737,8 @@
           {
             "name": "extended_guarantee",
             "in": "query",
-            "description": "Guarantee type.",
-            "required": true,
+            "description": "Guarantee type.\n+ **-1** - 12 hours\n+ **0** - 24 hours\n+ **1** - 3 days",
+            "required": false,
             "style": "form",
             "explode": true,
             "schema": {
@@ -13454,8 +13450,8 @@
           {
             "name": "extended_guarantee",
             "in": "query",
-            "description": "Guarantee type.",
-            "required": true,
+            "description": "Guarantee type.\n+ **-1** - 12 hours\n+ **0** - 24 hours\n+ **1** - 3 days",
+            "required": false,
             "style": "form",
             "explode": true,
             "schema": {
@@ -13524,14 +13520,18 @@
           {
             "name": "email_type",
             "in": "query",
-            "description": "Email type. Allowed values: **native**, **autoreg**.",
+            "description": "Email type.",
             "required": false,
             "style": "form",
             "explode": true,
             "schema": {
               "title": "Email Type",
               "type": "string",
-              "description": "Email type. Allowed values: **native**, **autoreg**."
+              "description": "Email type.",
+              "enum": [
+                "native",
+                "autoreg"
+              ]
             }
           },
           {
@@ -14023,7 +14023,10 @@
             "schema": {
               "title": "Random Proxy",
               "type": "integer",
-              "description": "Pass 1, if you get **captcha** in previous response."
+              "description": "Pass 1, if you get captcha in previous response.",
+              "enum": [
+                1
+              ]
             }
           }
         ],
@@ -14848,7 +14851,7 @@
             "explode": true,
             "schema": {
               "title": "Allow Ask Discount",
-              "type": "integer",
+              "type": "boolean",
               "description": "Allow users to ask discount for this account."
             }
           },
@@ -15865,7 +15868,7 @@
         ],
         "description": "Account Status."
       },
-      "DatePeriod": {
+      "DatePeriodModel": {
         "type": "string",
         "enum": [
           "day",
@@ -15874,7 +15877,7 @@
         ],
         "description": "In what notation is time measured."
       },
-      "ItemOrder": {
+      "ItemOrderModel": {
         "title": "Order By",
         "description": "Order by.",
         "type": "string",
@@ -15888,7 +15891,7 @@
           "exp_auctions"
         ]
       },
-      "ItemNotOrigin": {
+      "ItemNotOriginModel": {
         "title": "Not Origin",
         "description": "List of account origins that won't be included.",
         "type": "array",
@@ -15906,7 +15909,7 @@
           ]
         }
       },
-      "ItemOrigin": {
+      "ItemOriginModel": {
         "title": "Origin",
         "type": "array",
         "description": "List of account origins.",
@@ -15924,7 +15927,7 @@
           ]
         }
       },
-      "YesNoNoMatter": {
+      "YesNoNoMatterModel": {
         "type": "string",
         "enum": [
           "yes",
@@ -15932,7 +15935,7 @@
           "nomatter"
         ]
       },
-      "ItemEmailType": {
+      "ItemEmailTypeModel": {
         "title": "Email Type",
         "description": "Email type.",
         "type": "array",
@@ -17006,7 +17009,13 @@
           "method": {
             "title": "Method",
             "type": "string",
-            "description": "HTTP method of the API request to execute. If this parameter is not set, GET HTTP method will be used."
+            "description": "HTTP method of the API request to execute. If this parameter is not set, GET HTTP method will be used.",
+            "enum": [
+              "GET",
+              "POST",
+              "PUT",
+              "DELETE"
+            ]
           },
           "params": {
             "$ref": "#/components/schemas/BatchJobParams"
@@ -17249,11 +17258,8 @@
           "key"
         ],
         "type": "object",
-        "properties": {
-          "name": {
-            "type": "string",
-            "default": "value"
-          }
+        "additionalProperties": {
+          "type": "string"
         },
         "description": "parameters of the API request to execute."
       },
