@@ -3,7 +3,7 @@
   "info": {
     "title": "Lolzteam Public API: Forum",
     "description": "\n[Market API](https://lolzteam.readme.io)\n\n\n**API free libraries**\n\n\n+ [Node.js](https://github.com/NztForum/node-lzt) \n+ [Python](https://github.com/AS7RIDENIED/Lolzteam_Python_Api)\n+ [C#](https://github.com/fanidamn/LolzMarketAPI)\n\n**Rate limit**\n\n+ 20 requests per minute (3 seconds delay between per request) If you exceed the limit, the response code 429 will be returned to you.\n\n\n\nClients can subscribe to certain events to receive real time ping when data is changed within the system.\nThe subscription system uses the [WebSub protocol](https://github.com/w3c/websub) to communicate with hubs and subscribers.\n\n\n**One Time Token**\n\nAny client can generate one time token (OTT) using existing token. The format for OTT is as follow:\n\n**user_id,timestamp,once,client_id**\n\nWith **user_id** is the ID of authenticated user; **timestamp** is the unix timestamp for OTT expire time, the OTT will work as long as indicated by **timestamp** or by token expire date, whatever comes first; **client_id** is the client ID; **once** is md5 of a concentration of **user_id**, **timestamp**, a valid existing token and the client secret. Example code to generate an OTT:\n\n**Configuration**\n\n+ TTL of access token: 180 days\n+ TTL of authorization code: 30 seconds\n+ TTL of refresh token: 180 days\n+ Authorization URI: **/oauth/authorize** (Recommended)\n+ Access token exchange URI: **/oauth/token** (Disabled)\n+ Token param name: **oauth_token**\n+ Token bearer header name: **Bearer**\n\n**Discoverability**\n\nSystem information and availability can be determined by sending a GET request to **/** (index route). A list of resources will be returned. If the request is authenticated, the revisions of API system and installed modules will also made available for further inspection.\n\n**Common Parameters**\n\n\n**i18n**\n\nAll API requests accept **locale** parameter to switch user facing messages to specified language. The value must be a valid language code (ISO 639-1) with optional inclusion of a valid country code (ISO 3166-1 alpha 2) separated by hyphen (\"-\"). If no complete match can be found, a language with the same language code (even with different country code) will be used. In the worst case that there are no installed languages of requested language code, the default language will be used. Since api-2015100401.\n\n**Fields filtering**\n\nFor API method with resource data like a forum or a thread, the data can be filtered to get interested fields only. The general format is \"key.sub_key.deep_key\" if you want to include/exclude a specific field. The including rules take precedence over excluding ones.\n\n + **fields_include**: comma-separated list of fields of a resource. For additional fields, it is possible to use wildcard (*****) to include all default fields before specifying additional ones.\n + **fields_exclude**: comma-separated list of fields of a resource to exclude in the response. Since r2016062001, it is possible to use wildcard as a prefix (e.g. \"\\*.key\") to exclude the field everywhere.\n\n**Resource ordering**\n\nFor API method with list of resources, the resources can be ordered differently with the parameter **order**. List of supported orders will be specified for each method. The default order will always be **natural**. Most of the time, the natural order is the order of which each resource is added to the system (resource id for example).\n\n**Encryption**\n\nFor sensitive information like password, encryption can be used to increase data security. For all encryption with key support, the **client_secret** will be used as the key. List of supported encryptions:\n\n + **aes128**: AES 128 bit encryption (mode: ECB, padding: PKCS#7). Because of algorithm limitation, the binary md5 hash of key will be used instead of the key itself.\n\n**Headers**\n\n + **Api-Bb-Code-Chr: !youtube**: Replace multimedia tags (except youtube) in bb code html with **tools/chr** link. Since forum-2018100301.\n + **Api-Username-Inline-Style**: Return rich username for **username** fields. Since forum-2018052101.\n\n**Subscriptions**\n\nList of supported topics:\n\n+ **user_x** (x is the user_id of the interested user): receives ping when user data is inserted, updated or deleted. The registered callback will be included in GET **/users/:userId** as parameter **subscription_callback**.\n+ **user_notification_x** (x is the user_id of the interested user): receives ping when user gets a new notification. Notification data will be included in the ping. The registered callback will be included in GET **/notifications** as parameter **subscription_callback**.\n+ **thread_post_x** (x is the thread_id of the interested thread): receives ping when a post in the thread is inserted, updated or deleted. The registered callback will be included in GET **/posts?thread_id=x** as parameter **subscription_callback**.\n\nFor supported resources, two **Link** HTTP headers will be included. It is recommended to check for these headers before issuing subscribe request because webmaster can disable some or all types of subscriptions.\n\n`Link: <topic url>; rel=\"self\"`\n\n`Link: <hub url>; rel=\"hub\"`\n\n**Example subscribe request**\n\n`curl -XPOST https://api.zelenka.guru/subscriptions     -d 'oauth_token=$token'     -d 'hub.callback=$callback_url'     -d 'hub.mode=subscribe'     -d 'hub.topic=$topic'`\n\n**Content-Type**\n\napplication/x-www-form-urlencoded.\n\nYou can import the API into Postman using [this](https://docs.api.zelenka.guru/swagger/forum.json) file.",
-    "version": "1.0.42"
+    "version": "1.0.43"
   },
   "servers": [
     {
@@ -129,7 +129,12 @@
               }
             }
           }
-        }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ]
       }
     },
     "/oauth/token/associate": {
@@ -200,14 +205,18 @@
           {
             "name": "order",
             "in": "query",
-            "description": "Ordering of categories. Can be [**natural**, **list**].",
+            "description": "Ordering of categories.",
             "required": false,
             "style": "form",
             "explode": true,
             "schema": {
               "title": "Order",
               "type": "string",
-              "description": "Ordering of categories. Can be [**natural**, **list**]."
+              "description": "Ordering of categories.",
+              "enum": [
+                "natural",
+                "list"
+              ]
             }
           }
         ],
@@ -310,14 +319,18 @@
           {
             "name": "order",
             "in": "query",
-            "description": "Ordering of forums. Can be [**natural**, **list**].",
+            "description": "Ordering of forums.",
             "required": false,
             "style": "form",
             "explode": true,
             "schema": {
               "title": "Order",
               "type": "string",
-              "description": "Ordering of forums. Can be [**natural**, **list**]."
+              "description": "Ordering of forums.",
+              "enum": [
+                "natural",
+                "list"
+              ]
             }
           }
         ],
@@ -531,8 +544,11 @@
             "explode": true,
             "schema": {
               "title": "Total",
-              "type": "integer",
-              "description": "If included in the request, only the forum count is returned as **forums_total**."
+              "type": "string",
+              "description": "If included in the request, only the forum count is returned as **forums_total**.",
+              "enum": [
+                "true"
+              ]
             }
           }
         ],
@@ -580,14 +596,18 @@
           {
             "name": "order",
             "in": "query",
-            "description": "Ordering of pages. Can be [**natural**, **list**].",
+            "description": "Ordering of pages.",
             "required": false,
             "style": "form",
             "explode": true,
             "schema": {
               "title": "Order",
               "type": "string",
-              "description": "Ordering of pages. Can be [**natural**, **list**]."
+              "description": "Ordering of pages.",
+              "enum": [
+                "natural",
+                "list"
+              ]
             }
           }
         ],
@@ -722,11 +742,14 @@
             "description": "Ids of needed threads (separated by comma). If this parameter is set, all other filtering parameters will be ignored.",
             "required": false,
             "style": "form",
-            "explode": true,
+            "explode": false,
             "schema": {
               "title": "Thread Ids",
-              "type": "string",
-              "description": "Ids of needed threads (separated by comma). If this parameter is set, all other filtering parameters will be ignored."
+              "type": "array",
+              "description": "Ids of needed threads (separated by comma). If this parameter is set, all other filtering parameters will be ignored.",
+              "items": {
+                "type": "integer"
+              }
             }
           },
           {
@@ -752,7 +775,11 @@
             "schema": {
               "title": "Sticky",
               "type": "integer",
-              "description": "Filter to get only sticky **sticky=1** or non-sticky **sticky=0** threads. By default, all threads will be included and sticky ones will be at the top of the result on the first page. In mixed mode, sticky threads are not counted towards **threads_total** and does not affect pagination."
+              "description": "Filter to get only sticky **sticky=1** or non-sticky **sticky=0** threads. By default, all threads will be included and sticky ones will be at the top of the result on the first page. In mixed mode, sticky threads are not counted towards **threads_total** and does not affect pagination.",
+              "enum": [
+                1,
+                0
+              ]
             }
           },
           {
@@ -810,14 +837,12 @@
           {
             "name": "order",
             "in": "query",
-            "description": "Ordering of threads. Can be [**natural**, **thread_create_date**, **thread_create_date_reverse**, **thread_update_date**, **thread_update_date_reverse**, **thread_view_count**, **thread_view_count_reverse**, **thread_post_count**, **thread_post_count_reverse**, **first_post_likes**, **first_post_likes_reverse**].",
+            "description": "Ordering of threads.",
             "required": false,
             "style": "form",
             "explode": true,
             "schema": {
-              "title": "Order",
-              "type": "string",
-              "description": "Can be [**natural**, **thread_create_date**, **thread_create_date_reverse**, **thread_update_date**, **thread_update_date_reverse**, **thread_view_count**, **thread_view_count_reverse**, **thread_post_count**, **thread_post_count_reverse**, **first_post_likes**, **first_post_likes_reverse**]."
+              "$ref": "#/components/schemas/ThreadsOrderModel"
             }
           }
         ],
@@ -844,7 +869,7 @@
           "Threads"
         ],
         "summary": "Create Thread",
-        "description": "Create a new thread.\n\nContest prize upgrade type:\n+ 1 - Supreme - 3 months.\n+ 6 - Legend - 12 months.\n+ 12 - AntiPublic.One Plus subscription - 1 month.\n+ 14 - Uniq - lifetime.\n+ 17 - 18+ Photo leaks - 6 months.\n+ 19 - Auto giveaway participation - 1 month.\n\nRequired scopes:\n+ **post**",
+        "description": "Create a new thread.\n\nRequired scopes:\n+ **post**",
         "operationId": "threads.create",
         "parameters": [
           {
@@ -889,40 +914,49 @@
           {
             "name": "thread_tags",
             "in": "query",
-            "description": "Thread tags for the new thread. Separated by comma.",
+            "description": "Thread tags for the new thread.",
             "required": false,
             "style": "form",
-            "explode": true,
+            "explode": false,
             "schema": {
               "title": "Thread Tags",
-              "type": "string",
-              "description": "Thread tags for the new thread. Separated by comma."
+              "type": "array",
+              "description": "Thread tags for the new thread.",
+              "items": {
+                "type": "string"
+              }
             }
           },
           {
             "name": "contest_type",
             "in": "query",
-            "description": "Contest type. Can be [**by_finish_date**, **by_needed_members**]. Required if **forum_id** is 766 (Contests).",
+            "description": "Contest type. Required if **forum_id** is 766 (Contests).",
             "required": false,
             "style": "form",
             "explode": true,
             "schema": {
               "title": "Contest Type",
               "type": "string",
-              "description": "Contest type. Can be [**by_finish_date**, **by_needed_members**]. Required if **forum_id** is 766 (Contests)."
+              "description": "Contest type. Required if **forum_id** is 766 (Contests).",
+              "enum": [
+                "by_finish_date",
+                "by_needed_members"
+              ]
             }
           },
           {
             "name": "count_winners",
             "in": "query",
-            "description": "Winner count (prize count). The maximum value is 100. Required if **forum_id** is 766 (Contests).",
+            "description": "Winner count (prize count). Required if **forum_id** is 766 (Contests).",
             "required": false,
             "style": "form",
             "explode": true,
             "schema": {
               "title": "Count Winners",
               "type": "integer",
-              "description": "Winner count (prize count). The maximum value is 100. Required if **forum_id** is 766 (Contests)."
+              "description": "Winner count (prize count). Required if **forum_id** is 766 (Contests).",
+              "minimum": 1,
+              "maximum": 100
             }
           },
           {
@@ -947,21 +981,27 @@
             "explode": true,
             "schema": {
               "title": "Length Value",
-              "type": "string",
-              "description": "Giveaway duration value. The maximum duration is 3 days. Required if **contest_type** is **by_finish_date**."
+              "type": "integer",
+              "description": "Giveaway duration value. The maximum duration is 3 days. Required if **contest_type** is **by_finish_date**.",
+              "maximum": 1
             }
           },
           {
             "name": "length_option",
             "in": "query",
-            "description": "Giveaway duration type. Can be [**minutes**, **hours**, **days**]. The maximum duration is 3 days. Required if **contest_type** is **by_finish_date**.",
+            "description": "Giveaway duration type. The maximum duration is 3 days. Required if **contest_type** is **by_finish_date**.",
             "required": false,
             "style": "form",
             "explode": true,
             "schema": {
               "title": "Length Option",
               "type": "string",
-              "description": "Giveaway duration type. Can be [**minutes**, **hours**, **days**]. The maximum duration is 3 days. Required if **contest_type** is **by_finish_date**."
+              "description": "Giveaway duration type. The maximum duration is 3 days. Required if **contest_type** is **by_finish_date**.",
+              "enum": [
+                "minutes",
+                "hours",
+                "days"
+              ]
             }
           },
           {
@@ -993,14 +1033,18 @@
           {
             "name": "prize_type",
             "in": "query",
-            "description": "Prize type. Can be [**money**, **upgrades**]. Required if **forum_id** is 766 (Contests).",
+            "description": "Prize type. Required if **forum_id** is 766 (Contests).",
             "required": false,
             "style": "form",
             "explode": true,
             "schema": {
               "title": "Prize Type",
               "type": "string",
-              "description": "Prize type. Can be [**money**, **upgrades**]. Required if **forum_id** is 766 (Contests)."
+              "description": "Prize type. Required if **forum_id** is 766 (Contests).",
+              "enum": [
+                "money",
+                "upgrades"
+              ]
             }
           },
           {
@@ -1012,21 +1056,30 @@
             "explode": true,
             "schema": {
               "title": "Prize Data Money",
-              "type": "string",
-              "description": "How many money will each winner receive. Required if **prize_type** is **money**."
+              "type": "integer",
+              "description": "How many money will each winner receive. Required if **prize_type** is **money**.",
+              "minimum": 500
             }
           },
           {
             "name": "prize_data_upgrade",
             "in": "query",
-            "description": "Which upgrade will each winner receive. Required if **prize_type** is **upgrades**.",
+            "description": "Which upgrade will each winner receive. Required if **prize_type** is **upgrades**.\n+ 1 - Supreme - 3 months.\n+ 6 - Legend - 12 months.\n+ 12 - AntiPublic.One Plus subscription - 1 month.\n+ 14 - Uniq - lifetime.\n+ 17 - 18+ Photo leaks - 6 months.\n+ 19 - Auto giveaway participation - 1 month.",
             "required": false,
             "style": "form",
             "explode": true,
             "schema": {
               "title": "Prize Data Upgrade",
               "type": "integer",
-              "description": "Which upgrade will each winner receive. Required if **prize_type** is **upgrades**."
+              "description": "Which upgrade will each winner receive. Required if **prize_type** is **upgrades**.\n+ 1 - Supreme - 3 months.\n+ 6 - Legend - 12 months.\n+ 12 - AntiPublic.One Plus subscription - 1 month.\n+ 14 - Uniq - lifetime.\n+ 17 - 18+ Photo leaks - 6 months.\n+ 19 - Auto giveaway participation - 1 month.",
+              "enum": [
+                1,
+                6,
+                12,
+                14,
+                17,
+                19
+              ]
             }
           },
           {
@@ -1239,7 +1292,10 @@
             "schema": {
               "title": "Email",
               "type": "integer",
-              "description": "Whether to receive notification as email."
+              "description": "Whether to receive notification as email.",
+              "enum": [
+                1
+              ]
             }
           }
         ],
@@ -1320,8 +1376,11 @@
             "explode": true,
             "schema": {
               "title": "Total",
-              "type": "integer",
-              "description": "If included in the request, only the thread count is returned as **threads_total**."
+              "type": "string",
+              "description": "If included in the request, only the thread count is returned as **threads_total**.",
+              "enum": [
+                "true"
+              ]
             }
           }
         ],
@@ -1767,14 +1826,20 @@
           {
             "name": "order",
             "in": "query",
-            "description": "Ordering of posts. Can be [**natural**, **natural_reverse**, **post_create_date**, **post_create_date_reverse**].",
+            "description": "Ordering of posts.",
             "required": false,
             "style": "form",
             "explode": true,
             "schema": {
               "title": "Order",
               "type": "string",
-              "description": "Ordering of posts. Can be [**natural**, **natural_reverse**, **post_create_date**, **post_create_date_reverse**]."
+              "description": "Ordering of posts.",
+              "enum": [
+                "natural",
+                "natural_reverse",
+                "post_create_date",
+                "post_create_date_reverse"
+              ]
             }
           }
         ],
@@ -1951,14 +2016,17 @@
           {
             "name": "thread_tags",
             "in": "query",
-            "description": "New tags of the thread (only used if the post is the first post in the thread and the authenticated user can edit thread tags). Separated by comma.",
+            "description": "New tags of the thread (only used if the post is the first post in the thread and the authenticated user can edit thread tags).",
             "required": false,
             "style": "form",
-            "explode": true,
+            "explode": false,
             "schema": {
               "title": "Thread Tags",
-              "type": "string",
-              "description": "New tags of the thread (only used if the post is the first post in the thread and the authenticated user can edit thread tags). Separated by comma."
+              "type": "array",
+              "description": "New tags of the thread (only used if the post is the first post in the thread and the authenticated user can edit thread tags).",
+              "items": {
+                "type": "string"
+              }
             }
           },
           {
@@ -2696,8 +2764,11 @@
             "explode": true,
             "schema": {
               "title": "Custom Fields",
-              "type": "string",
-              "description": "Custom fields to filter. Example: **custom_fields[telegram]=telegramLogin**."
+              "type": "object",
+              "description": "Custom fields to filter. Example: **custom_fields[telegram]=telegramLogin**.",
+              "additionalProperties": {
+                "type": "string"
+              }
             }
           }
         ],
@@ -2964,9 +3035,11 @@
             "explode": true,
             "schema": {
               "title": "Fields",
-              "type": "array",
+              "type": "object",
               "description": "Array of values for user fields.",
-              "items": {}
+              "additionalProperties": {
+                "type": "string"
+              }
             }
           }
         ],
@@ -3250,14 +3323,19 @@
           {
             "name": "order",
             "in": "query",
-            "description": "Ordering of followers. Support: **natural**, **follow_date**, **follow_date_reverse**.",
+            "description": "Ordering of followers.",
             "required": false,
             "style": "form",
             "explode": true,
             "schema": {
               "title": "Order",
               "type": "string",
-              "description": "Ordering of followers. Support: **natural**, **follow_date**, **follow_date_reverse**."
+              "description": "Ordering of followers.",
+              "enum": [
+                "natural",
+                "follow_date",
+                "follow_date_reverse"
+              ]
             }
           },
           {
@@ -3411,14 +3489,19 @@
           {
             "name": "order",
             "in": "query",
-            "description": "Ordering of users. Support: **natural**, **follow_date**, **follow_date_reverse**.",
+            "description": "Ordering of users.",
             "required": false,
             "style": "form",
             "explode": true,
             "schema": {
               "title": "Order",
               "type": "string",
-              "description": "Ordering of users. Support: **natural**, **follow_date**, **follow_date_reverse**."
+              "description": "Ordering of users.",
+              "enum": [
+                "natural",
+                "follow_date",
+                "follow_date_reverse"
+              ]
             }
           },
           {
@@ -3485,8 +3568,11 @@
             "explode": true,
             "schema": {
               "title": "Total",
-              "type": "integer",
-              "description": "If included in the request, only the user count is returned as **users_total**."
+              "type": "string",
+              "description": "If included in the request, only the user count is returned as **users_total**.",
+              "enum": [
+                "true"
+              ]
             }
           }
         ],
@@ -3769,8 +3855,7 @@
                 "$ref": "#/components/schemas/Body_create_profile_post_users__userId__timeline_post"
               }
             }
-          },
-          "required": true
+          }
         },
         "responses": {
           "200": {
@@ -4154,8 +4239,7 @@
                 "$ref": "#/components/schemas/Body_create_profile_post_comment_profile_posts__profilePostId__comments_post"
               }
             }
-          },
-          "required": true
+          }
         },
         "responses": {
           "200": {
@@ -4417,7 +4501,7 @@
           {
             "name": "recipient_id",
             "in": "query",
-            "description": "Id of recipient. Required if **is_group=0**.",
+            "description": "Id of recipient. Required if **is_group=false**.",
             "required": false,
             "style": "form",
             "explode": true,
@@ -4430,7 +4514,7 @@
           {
             "name": "recipients",
             "in": "query",
-            "description": "Username of recipient. Required if **is_group=1**.",
+            "description": "Username of recipient. Required if **is_group=true**.",
             "required": false,
             "style": "form",
             "explode": true,
@@ -4443,20 +4527,21 @@
           {
             "name": "is_group",
             "in": "query",
-            "description": "Is group. Set **0** if personal conversation, or set **1** if group.",
+            "description": "Is group. Set **false** if personal conversation, or set **true** if group.",
             "required": true,
             "style": "form",
             "explode": true,
             "schema": {
               "title": "Is Group",
-              "type": "integer",
-              "description": "Is group. Set **0** if personal conversation, or set **1** if group."
+              "type": "boolean",
+              "description": "Is group. Set **false** if personal conversation, or set **true** if group.",
+              "default": false
             }
           },
           {
             "name": "title",
             "in": "query",
-            "description": "The title of new conversation. Required if **is_group=1**.",
+            "description": "The title of new conversation. Required if **is_group=true**.",
             "required": false,
             "style": "form",
             "explode": true,
@@ -4476,7 +4561,11 @@
             "schema": {
               "title": "Open Invite",
               "type": "integer",
-              "description": "Open invite. Set **0** if closed invite, or set **1** if open invite."
+              "description": "Open invite. Set **0** if closed invite, or set **1** if open invite.",
+              "enum": [
+                1,
+                0
+              ]
             }
           },
           {
@@ -4489,7 +4578,11 @@
             "schema": {
               "title": "Conversation Locked",
               "type": "integer",
-              "description": "Is conversation locked."
+              "description": "Is conversation locked.",
+              "enum": [
+                1,
+                0
+              ]
             }
           },
           {
@@ -4501,7 +4594,7 @@
             "explode": true,
             "schema": {
               "title": "Allow Edit Messages",
-              "type": "integer",
+              "type": "boolean",
               "description": "Allow edit messages."
             }
           }
@@ -4667,14 +4760,18 @@
           {
             "name": "order",
             "in": "query",
-            "description": "Ordering of messages. Can be [**natural**, **natural_reverse**].",
+            "description": "Ordering of messages.",
             "required": false,
             "style": "form",
             "explode": true,
             "schema": {
               "title": "Order",
               "type": "string",
-              "description": "Ordering of messages. Can be [**natural**, **natural_reverse**]."
+              "description": "Ordering of messages.",
+              "enum": [
+                "natural",
+                "natural_reverse"
+              ]
             }
           },
           {
@@ -5549,8 +5646,7 @@
                 "$ref": "#/components/schemas/BatchModel"
               }
             }
-          },
-          "required": true
+          }
         },
         "responses": {
           "200": {
@@ -5678,6 +5774,24 @@
   },
   "components": {
     "schemas": {
+      "ThreadsOrderModel": {
+        "title": "Order",
+        "description": "Ordering of threads.",
+        "type": "string",
+        "enum": [
+          "natural",
+          "thread_create_date",
+          "thread_create_date_reverse",
+          "thread_update_date",
+          "thread_update_date_reverse",
+          "thread_view_count",
+          "thread_view_count_reverse",
+          "thread_post_count",
+          "thread_post_count_reverse",
+          "first_post_likes",
+          "first_post_likes_reverse"
+        ]
+      },
       "BatchModel": {
         "title": "BatchModel",
         "type": "array",
@@ -5728,6 +5842,9 @@
       "Body_create_profile_post_comment_profile_posts__profilePostId__comments_post": {
         "title": "Body_create_profile_post_comment_profile_posts__profilePostId__comments_post",
         "type": "object",
+        "required": [
+          "comment_body"
+        ],
         "properties": {
           "comment_body": {
             "title": "Comment Body",
@@ -5738,9 +5855,6 @@
       },
       "Body_create_profile_post_users__userId__timeline_post": {
         "title": "Body_create_profile_post_users__userId__timeline_post",
-        "required": [
-          "post_body"
-        ],
         "type": "object",
         "properties": {
           "post_body": {
@@ -6016,17 +6130,27 @@
           "post": {
             "title": "Post",
             "type": "integer",
-            "description": "Whether to receive notification for post **1** or just thread **0**."
+            "description": "Whether to receive notification for post **1** or just thread **0**.",
+            "enum": [
+              1,
+              0
+            ]
           },
           "alert": {
             "title": "Alert",
             "type": "integer",
-            "description": "Whether to receive notification as alert."
+            "description": "Whether to receive notification as alert.",
+            "enum": [
+              1
+            ]
           },
           "email": {
             "title": "Email",
             "type": "integer",
-            "description": "Whether to receive notification as email."
+            "description": "Whether to receive notification as email.",
+            "enum": [
+              1
+            ]
           }
         }
       },
@@ -7069,7 +7193,13 @@
           "method": {
             "title": "Method",
             "type": "string",
-            "description": "HTTP method of the API request to execute. If this parameter is not set, GET HTTP method will be used."
+            "description": "HTTP method of the API request to execute. If this parameter is not set, GET HTTP method will be used.",
+            "enum": [
+              "GET",
+              "POST",
+              "PUT",
+              "DELETE"
+            ]
           },
           "params": {
             "$ref": "#/components/schemas/BatchJobParams"
@@ -7302,12 +7432,8 @@
           "key"
         ],
         "type": "object",
-        "properties": {
-          "name": {
-            "title": "name",
-            "type": "string",
-            "default": "value"
-          }
+        "additionalProperties": {
+          "type": "string"
         },
         "description": "parameters of the API request to execute."
       },
