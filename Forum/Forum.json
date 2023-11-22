@@ -3,7 +3,7 @@
   "info": {
     "title": "Lolzteam Public API: Forum",
     "description": "\n[Market API](https://lolzteam.readme.io)\n\n\n**API free libraries**\n\n\n+ [Node.js](https://github.com/NztForum/node-lzt) \n+ [Python](https://github.com/AS7RIDENIED/Lolzteam_Python_Api)\n+ [C#](https://github.com/fanidamn/LolzMarketAPI)\n\n**Rate limit**\n\n+ 20 requests per minute (3 seconds delay between per request) If you exceed the limit, the response code 429 will be returned to you.\n\n\n\nClients can subscribe to certain events to receive real time ping when data is changed within the system.\nThe subscription system uses the [WebSub protocol](https://github.com/w3c/websub) to communicate with hubs and subscribers.\n\n\n**One Time Token**\n\nAny client can generate one time token (OTT) using existing token. The format for OTT is as follow:\n\n**user_id,timestamp,once,client_id**\n\nWith **user_id** is the ID of authenticated user; **timestamp** is the unix timestamp for OTT expire time, the OTT will work as long as indicated by **timestamp** or by token expire date, whatever comes first; **client_id** is the client ID; **once** is md5 of a concentration of **user_id**, **timestamp**, a valid existing token and the client secret. Example code to generate an OTT:\n\n**Configuration**\n\n+ TTL of access token: 180 days\n+ TTL of authorization code: 30 seconds\n+ TTL of refresh token: 180 days\n+ Authorization URI: **/oauth/authorize** (Recommended)\n+ Access token exchange URI: **/oauth/token** (Disabled)\n+ Token param name: **oauth_token**\n+ Token bearer header name: **Bearer**\n\n**Discoverability**\n\nSystem information and availability can be determined by sending a GET request to **/** (index route). A list of resources will be returned. If the request is authenticated, the revisions of API system and installed modules will also made available for further inspection.\n\n**Common Parameters**\n\n\n**i18n**\n\nAll API requests accept **locale** parameter to switch user facing messages to specified language. The value must be a valid language code (ISO 639-1) with optional inclusion of a valid country code (ISO 3166-1 alpha 2) separated by hyphen (\"-\"). If no complete match can be found, a language with the same language code (even with different country code) will be used. In the worst case that there are no installed languages of requested language code, the default language will be used. Since api-2015100401.\n\n**Fields filtering**\n\nFor API method with resource data like a forum or a thread, the data can be filtered to get interested fields only. The general format is \"key.sub_key.deep_key\" if you want to include/exclude a specific field. The including rules take precedence over excluding ones.\n\n + **fields_include**: comma-separated list of fields of a resource. For additional fields, it is possible to use wildcard (*****) to include all default fields before specifying additional ones.\n + **fields_exclude**: comma-separated list of fields of a resource to exclude in the response. Since r2016062001, it is possible to use wildcard as a prefix (e.g. \"\\*.key\") to exclude the field everywhere.\n\n**Resource ordering**\n\nFor API method with list of resources, the resources can be ordered differently with the parameter **order**. List of supported orders will be specified for each method. The default order will always be **natural**. Most of the time, the natural order is the order of which each resource is added to the system (resource id for example).\n\n**Encryption**\n\nFor sensitive information like password, encryption can be used to increase data security. For all encryption with key support, the **client_secret** will be used as the key. List of supported encryptions:\n\n + **aes128**: AES 128 bit encryption (mode: ECB, padding: PKCS#7). Because of algorithm limitation, the binary md5 hash of key will be used instead of the key itself.\n\n**Headers**\n\n + **Api-Bb-Code-Chr: !youtube**: Replace multimedia tags (except youtube) in bb code html with **tools/chr** link. Since forum-2018100301.\n + **Api-Username-Inline-Style**: Return rich username for **username** fields. Since forum-2018052101.\n\n**Subscriptions**\n\nList of supported topics:\n\n+ **user_x** (x is the user_id of the interested user): receives ping when user data is inserted, updated or deleted. The registered callback will be included in GET **/users/:userId** as parameter **subscription_callback**.\n+ **user_notification_x** (x is the user_id of the interested user): receives ping when user gets a new notification. Notification data will be included in the ping. The registered callback will be included in GET **/notifications** as parameter **subscription_callback**.\n+ **thread_post_x** (x is the thread_id of the interested thread): receives ping when a post in the thread is inserted, updated or deleted. The registered callback will be included in GET **/posts?thread_id=x** as parameter **subscription_callback**.\n\nFor supported resources, two **Link** HTTP headers will be included. It is recommended to check for these headers before issuing subscribe request because webmaster can disable some or all types of subscriptions.\n\n`Link: <topic url>; rel=\"self\"`\n\n`Link: <hub url>; rel=\"hub\"`\n\n**Example subscribe request**\n\n`curl -XPOST https://api.zelenka.guru/subscriptions     -d 'oauth_token=$token'     -d 'hub.callback=$callback_url'     -d 'hub.mode=subscribe'     -d 'hub.topic=$topic'`\n\n**Content-Type**\n\napplication/x-www-form-urlencoded.\n\nYou can import the API into Postman using [this](https://docs.api.zelenka.guru/swagger/forum.json) file.",
-    "version": "1.0.43"
+    "version": "1.0.44"
   },
   "servers": [
     {
@@ -1135,17 +1135,7 @@
         "operationId": "threads.getThread",
         "parameters": [
           {
-            "name": "threadId",
-            "in": "path",
-            "description": "Id of thread.",
-            "required": true,
-            "style": "simple",
-            "explode": false,
-            "schema": {
-              "title": "Threadid",
-              "type": "integer",
-              "description": "Id of thread."
-            }
+            "$ref": "#/components/parameters/threadId"
           }
         ],
         "responses": {
@@ -1175,17 +1165,7 @@
         "operationId": "threads.delete",
         "parameters": [
           {
-            "name": "threadId",
-            "in": "path",
-            "description": "Id of thread.",
-            "required": true,
-            "style": "simple",
-            "explode": false,
-            "schema": {
-              "title": "Threadid",
-              "type": "integer",
-              "description": "Id of thread."
-            }
+            "$ref": "#/components/parameters/threadId"
           },
           {
             "name": "reason",
@@ -1220,6 +1200,38 @@
         ]
       }
     },
+    "/threads/{threadId}/bump": {
+      "post": {
+        "tags": [
+          "Threads"
+        ],
+        "summary": "Bump Thread",
+        "description": "Bump a thread.\n\nRequired scopes:\n+ **post**",
+        "operationId": "threads.bumpThread",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/threadId"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StatusMessageModel"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ]
+      }
+    },
     "/threads/{threadId}/followers": {
       "get": {
         "tags": [
@@ -1230,17 +1242,7 @@
         "operationId": "threads.getFollowThread",
         "parameters": [
           {
-            "name": "threadId",
-            "in": "path",
-            "description": "Id of thread.",
-            "required": true,
-            "style": "simple",
-            "explode": false,
-            "schema": {
-              "title": "Threadid",
-              "type": "integer",
-              "description": "Id of thread."
-            }
+            "$ref": "#/components/parameters/threadId"
           }
         ],
         "responses": {
@@ -1270,17 +1272,7 @@
         "operationId": "threads.followThread",
         "parameters": [
           {
-            "name": "threadId",
-            "in": "path",
-            "description": "Id of thread.",
-            "required": true,
-            "style": "simple",
-            "explode": false,
-            "schema": {
-              "title": "Threadid",
-              "type": "integer",
-              "description": "Id of thread."
-            }
+            "$ref": "#/components/parameters/threadId"
           },
           {
             "name": "email",
@@ -1326,17 +1318,7 @@
         "operationId": "threads.unfollowThread",
         "parameters": [
           {
-            "name": "threadId",
-            "in": "path",
-            "description": "Id of thread.",
-            "required": true,
-            "style": "simple",
-            "explode": false,
-            "schema": {
-              "title": "Threadid",
-              "type": "integer",
-              "description": "Id of thread."
-            }
+            "$ref": "#/components/parameters/threadId"
           }
         ],
         "responses": {
@@ -1413,17 +1395,7 @@
         "operationId": "threads.getNavigationElements",
         "parameters": [
           {
-            "name": "threadId",
-            "in": "path",
-            "description": "Id of thread.",
-            "required": true,
-            "style": "simple",
-            "explode": false,
-            "schema": {
-              "title": "Threadid",
-              "type": "integer",
-              "description": "Id of thread."
-            }
+            "$ref": "#/components/parameters/threadId"
           }
         ],
         "responses": {
@@ -1455,17 +1427,7 @@
         "operationId": "threads.getPoll",
         "parameters": [
           {
-            "name": "threadId",
-            "in": "path",
-            "description": "Id of thread.",
-            "required": true,
-            "style": "simple",
-            "explode": false,
-            "schema": {
-              "title": "Threadid",
-              "type": "integer",
-              "description": "Id of thread."
-            }
+            "$ref": "#/components/parameters/threadId"
           }
         ],
         "responses": {
@@ -1497,17 +1459,7 @@
         "operationId": "threads.votePoll",
         "parameters": [
           {
-            "name": "threadId",
-            "in": "path",
-            "description": "Id of thread.",
-            "required": true,
-            "style": "simple",
-            "explode": false,
-            "schema": {
-              "title": "Threadid",
-              "type": "integer",
-              "description": "Id of thread."
-            }
+            "$ref": "#/components/parameters/threadId"
           },
           {
             "name": "response_id",
@@ -1707,48 +1659,6 @@
         ]
       }
     },
-    "/threads/{threadId}/bump": {
-      "post": {
-        "tags": [
-          "Threads"
-        ],
-        "summary": "Bump Thread",
-        "description": "Bump a thread.\n\nRequired scopes:\n+ **post**",
-        "operationId": "threads.bumpThread",
-        "parameters": [
-          {
-            "name": "threadId",
-            "in": "path",
-            "description": "Id of thread.",
-            "required": true,
-            "style": "simple",
-            "explode": false,
-            "schema": {
-              "title": "Threadid",
-              "type": "integer",
-              "description": "Id of thread."
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Successful Response.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/StatusMessageModel"
-                }
-              }
-            }
-          }
-        },
-        "security": [
-          {
-            "HTTPBearer": []
-          }
-        ]
-      }
-    },
     "/posts": {
       "get": {
         "tags": [
@@ -1838,7 +1748,9 @@
                 "natural",
                 "natural_reverse",
                 "post_create_date",
-                "post_create_date_reverse"
+                "post_create_date_reverse",
+                "post_likes",
+                "post_likes_reverse"
               ]
             }
           }
@@ -2725,9 +2637,9 @@
         "tags": [
           "Users"
         ],
-        "summary": "Get Filtered Users",
-        "description": "Filtered list of users by username, email or custom fields.\n\nRequired scopes:\n+ **read**\n+ **admincp**",
-        "operationId": "users.getFiltered",
+        "summary": "Find Users",
+        "description": "List of users filtered by username, email or custom fields.\n\nRequired scopes:\n+ **read**\n+ **admincp**",
+        "operationId": "users.findUsers",
         "parameters": [
           {
             "name": "username",
@@ -2769,6 +2681,227 @@
               "additionalProperties": {
                 "type": "string"
               }
+            }
+          },
+          {
+            "name": "custom_fields[location]",
+            "in": "query",
+            "description": "User location field.",
+            "required": false,
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "title": "Location",
+              "type": "string",
+              "description": "User location field."
+            }
+          },
+          {
+            "name": "custom_fields[occupation]",
+            "in": "query",
+            "description": "User occupation field.",
+            "required": false,
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "title": "Occupation",
+              "type": "string",
+              "description": "User occupation field."
+            }
+          },
+          {
+            "name": "custom_fields[homepage]",
+            "in": "query",
+            "description": "User homepage field.",
+            "required": false,
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "title": "Occupation",
+              "type": "string",
+              "description": "User homepage field."
+            }
+          },
+          {
+            "name": "custom_fields[_4]",
+            "in": "query",
+            "description": "User interests field.",
+            "required": false,
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "title": "Interests",
+              "type": "string",
+              "description": "User interests field."
+            }
+          },
+          {
+            "name": "custom_fields[lztInnovationLink]",
+            "in": "query",
+            "description": "User thread link for \"innovator\" trophy.",
+            "required": false,
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "title": "Lzt Innovation Link",
+              "type": "string",
+              "description": "User thread link for \"innovator\" trophy."
+            }
+          },
+          {
+            "name": "custom_fields[lztInnovation20Link]",
+            "in": "query",
+            "description": "User thread link for \"innovator 2.0\" trophy.",
+            "required": false,
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "title": "Lzt Innovation Link 2",
+              "type": "string",
+              "description": "User thread link for \"innovator 2.0\" trophy."
+            }
+          },
+          {
+            "name": "custom_fields[lztInnovation30Link]",
+            "in": "query",
+            "description": "User thread link for \"innovator 3.0\" trophy.",
+            "required": false,
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "title": "Lzt Innovation Link 3",
+              "type": "string",
+              "description": "User thread link for \"innovator 3.0\" trophy."
+            }
+          },
+          {
+            "name": "custom_fields[scamURL]",
+            "in": "query",
+            "description": "User scam url field.",
+            "required": false,
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "title": "Scam Url",
+              "type": "string",
+              "description": "User scamURL field."
+            }
+          },
+          {
+            "name": "custom_fields[maecenasValue]",
+            "in": "query",
+            "description": "User maecenas value field.",
+            "required": false,
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "title": "Maecenas Value",
+              "type": "integer",
+              "description": "User maecenas alue field."
+            }
+          },
+          {
+            "name": "custom_fields[telegram]",
+            "in": "query",
+            "description": "User telegram field.",
+            "required": false,
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "title": "Telegram",
+              "type": "string",
+              "description": "User telegram field."
+            }
+          },
+          {
+            "name": "custom_fields[vk]",
+            "in": "query",
+            "description": "User vk field.",
+            "required": false,
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "title": "VK",
+              "type": "string",
+              "description": "User vk field."
+            }
+          },
+          {
+            "name": "custom_fields[qiwi]",
+            "in": "query",
+            "description": "User qiwi field.",
+            "required": false,
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "title": "Qiwi",
+              "type": "string",
+              "description": "User qiwi field."
+            }
+          },
+          {
+            "name": "custom_fields[discord]",
+            "in": "query",
+            "description": "User discord field.",
+            "required": false,
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "title": "Discord",
+              "type": "string",
+              "description": "User discord field."
+            }
+          },
+          {
+            "name": "custom_fields[steam]",
+            "in": "query",
+            "description": "User telegram field.",
+            "required": false,
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "title": "Steam",
+              "type": "string",
+              "description": "User steam field."
+            }
+          },
+          {
+            "name": "custom_fields[jabber]",
+            "in": "query",
+            "description": "User jabber field.",
+            "required": false,
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "title": "Jabber",
+              "type": "string",
+              "description": "User jabber field."
+            }
+          },
+          {
+            "name": "custom_fields[lztDeposit]",
+            "in": "query",
+            "description": "User lztDeposit field.",
+            "required": false,
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "title": "LZT Deposit",
+              "type": "integer",
+              "description": "User lztDeposit field."
+            }
+          },
+          {
+            "name": "custom_fields[ban_reason]",
+            "in": "query",
+            "description": "User ban_reason field.",
+            "required": false,
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "title": "Ban Reason",
+              "type": "string",
+              "description": "User ban_reason field."
             }
           }
         ],
@@ -2935,7 +3068,7 @@
           {
             "name": "username",
             "in": "query",
-            "description": "New username of the user. Changing username requires Administrator permission.",
+            "description": "New username of the user. (Require admincp scope)",
             "required": false,
             "style": "form",
             "explode": true,
@@ -2961,85 +3094,251 @@
           {
             "name": "primary_group_id",
             "in": "query",
-            "description": "Id of new primary group.",
+            "description": "Id of new primary group. (Require admincp scope)",
             "required": false,
             "style": "form",
             "explode": true,
             "schema": {
               "title": "Primary Group Id",
               "type": "integer",
-              "description": "Id of new primary group."
+              "description": "Id of new primary group. (Require admincp scope)"
             }
           },
           {
             "name": "secondary_group_ids[]",
             "in": "query",
-            "description": "Array of ids of new secondary groups.",
+            "description": "Array of ids of new secondary groups. (Require admincp scope)",
             "required": false,
             "style": "form",
             "explode": true,
             "schema": {
               "title": "Secondary Group Ids",
               "type": "array",
-              "description": "Array of ids of new secondary groups.",
+              "description": "Array of ids of new secondary groups. (Require admincp scope)",
               "items": {
                 "type": "integer"
               }
             }
           },
           {
+            "name": "display_group_id",
+            "in": "query",
+            "description": "Id of group you want to display.",
+            "required": false,
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "title": "Display group id.",
+              "type": "integer",
+              "description": "Id of group you want to display."
+            }
+          },
+          {
             "name": "user_dob_day",
             "in": "query",
-            "description": "Date of birth (day) of the new user.",
+            "description": "Your date of birth (day).",
             "required": false,
             "style": "form",
             "explode": true,
             "schema": {
               "title": "User Dob Day",
               "type": "integer",
-              "description": "Date of birth (day) of the new user."
+              "description": "Your date of birth (day)."
             }
           },
           {
             "name": "user_dob_month",
             "in": "query",
-            "description": "Date of birth (month) of the new user.",
+            "description": "Your date of birth (month).",
             "required": false,
             "style": "form",
             "explode": true,
             "schema": {
               "title": "User Dob Month",
               "type": "integer",
-              "description": "Date of birth (month) of the new user."
+              "description": "Your date of birth (month)."
             }
           },
           {
             "name": "user_dob_year",
             "in": "query",
-            "description": "Date of birth (year) of the new user.",
+            "description": "Your date of birth (year).",
             "required": false,
             "style": "form",
             "explode": true,
             "schema": {
               "title": "User Dob Year",
               "type": "integer",
-              "description": "Date of birth (year) of the new user."
+              "description": "Your date of birth (year)."
             }
           },
           {
-            "name": "fields[]",
+            "name": "fields[location]",
             "in": "query",
-            "description": "Array of values for user fields.",
+            "description": "Your location.",
             "required": false,
             "style": "form",
             "explode": true,
             "schema": {
-              "title": "Fields",
-              "type": "object",
-              "description": "Array of values for user fields.",
-              "additionalProperties": {
-                "type": "string"
-              }
+              "title": "Location",
+              "type": "string",
+              "description": "Your location."
+            }
+          },
+          {
+            "name": "fields[occupation]",
+            "in": "query",
+            "description": "Your occupation.",
+            "required": false,
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "title": "Occupation",
+              "type": "string",
+              "description": "Your occupation."
+            }
+          },
+          {
+            "name": "fields[homepage]",
+            "in": "query",
+            "description": "Your homepage. ",
+            "required": false,
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "title": "Occupation",
+              "type": "string",
+              "description": "Your occupation."
+            }
+          },
+          {
+            "name": "fields[_4]",
+            "in": "query",
+            "description": "Your interests.",
+            "required": false,
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "title": "Interests",
+              "type": "string",
+              "description": "Your interests."
+            }
+          },
+          {
+            "name": "fields[lztInnovationLink]",
+            "in": "query",
+            "description": "Thread link for \"innovator\" trophy.",
+            "required": false,
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "title": "Lzt Innovation Link",
+              "type": "string",
+              "description": "Thread link for \"innovator\" trophy."
+            }
+          },
+          {
+            "name": "fields[lztInnovation20Link]",
+            "in": "query",
+            "description": "Thread link for \"innovator 2.0\" trophy.",
+            "required": false,
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "title": "Lzt Innovation Link 2",
+              "type": "string",
+              "description": "Thread link for \"innovator 2.0\" trophy."
+            }
+          },
+          {
+            "name": "fields[lztInnovation30Link]",
+            "in": "query",
+            "description": "Thread link for \"innovator 3.0\" trophy.",
+            "required": false,
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "title": "Lzt Innovation Link 3",
+              "type": "string",
+              "description": "Thread link for \"innovator 3.0\" trophy."
+            }
+          },
+          {
+            "name": "fields[telegram]",
+            "in": "query",
+            "description": "Your telegram.",
+            "required": false,
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "title": "Telegram",
+              "type": "string",
+              "description": "Your telegram."
+            }
+          },
+          {
+            "name": "fields[vk]",
+            "in": "query",
+            "description": "Your vk.",
+            "required": false,
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "title": "VK",
+              "type": "string",
+              "description": "Your vk."
+            }
+          },
+          {
+            "name": "fields[qiwi]",
+            "in": "query",
+            "description": "Your qiwi.",
+            "required": false,
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "title": "Qiwi",
+              "type": "string",
+              "description": "Your qiwi."
+            }
+          },
+          {
+            "name": "fields[discord]",
+            "in": "query",
+            "description": "Your discord.",
+            "required": false,
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "title": "Discord",
+              "type": "string",
+              "description": "Your discord."
+            }
+          },
+          {
+            "name": "fields[steam]",
+            "in": "query",
+            "description": "Your steam.",
+            "required": false,
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "title": "Steam",
+              "type": "string",
+              "description": "Your steam."
+            }
+          },
+          {
+            "name": "fields[jabber]",
+            "in": "query",
+            "description": "Your jabber.",
+            "required": false,
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "title": "Jabber",
+              "type": "string",
+              "description": "Your jabber."
             }
           }
         ],
@@ -4688,6 +4987,23 @@
               "type": "integer",
               "description": "Id of conversation."
             }
+          },
+          {
+            "name": "delete_type",
+            "in": "query",
+            "description": "Deletion type.",
+            "required": true,
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "title": "Delete type.",
+              "type": "string",
+              "description": "Deletion type.",
+              "enum": [
+                "delete",
+                "delete_ignore"
+              ]
+            }
           }
         ],
         "responses": {
@@ -5773,6 +6089,36 @@
     }
   },
   "components": {
+    "parameters": {
+      "threadId": {
+        "name": "threadId",
+        "in": "path",
+        "description": "Id of thread.",
+        "required": true,
+        "style": "simple",
+        "explode": false,
+        "schema": {
+          "title": "Threadid",
+          "type": "integer",
+          "description": "Id of thread."
+        }
+      },
+      "userId": {
+        "name": "userId",
+        "in": "path",
+        "description": "User id.",
+        "required": true,
+        "style": "simple",
+        "explode": false,
+        "schema": {
+          "title": "Userid",
+          "type": "integer",
+          "description": "User id."
+        }
+      }
+    },
+    "responses": {
+    },
     "schemas": {
       "ThreadsOrderModel": {
         "title": "Order",
@@ -6151,6 +6497,20 @@
             "enum": [
               1
             ]
+          },
+          "prefix_ids[]": {
+            "title": "Prefix ids",
+            "type": "array",
+            "description": "Prefix ids.",
+            "items": {
+              "type": "integer"
+            }
+          },
+          "minimal_contest_amount": {
+            "title": "Minimal Contest Amount",
+            "type": "integer",
+            "description": "Minimal contest amount. (Only for 766 forumId)",
+            "minimum": 0
           }
         }
       },
