@@ -3,7 +3,7 @@
   "info": {
     "title": "Lolzteam Public API: Market",
     "description": "\n[Forum API](https://docs.api.zelenka.guru/?forum)\n\n\n**API free libraries**\n\n\n+ [Node.js](https://github.com/NztForum/node-lzt) \n+ [Python](https://github.com/AS7RIDENIED/Lolzteam_Python_Api)\n+ [C#](https://github.com/fanidamn/LolzMarketAPI)\n\n**Rate limit**\n\n\n+ 20 requests per minute (3 seconds delay between per request)\nIf you exceed the limit, the response code 429 will be returned to you.\n\n**Authorization**\n\n\nFor using this api you need to create API Client and get Access Token with **market** scope.\n\n**Content-Type**\n\napplication/x-www-form-urlencoded.\n\nYou can import the API into Postman using [this](https://docs.api.zelenka.guru/swagger/market.json) file.\n\n**Is for free access?**\n\nTo use the market api, you need to have 200 sympathies, or you can purchase monthly subscription [here](https://zelenka.guru/account/upgrades).",
-    "version": "1.1.2"
+    "version": "1.1.3"
   },
   "servers": [
     {
@@ -3783,7 +3783,18 @@
             }
           },
           {
-            "$ref": "#/components/parameters/price"
+            "name": "price",
+            "in": "query",
+            "required": false,
+            "description": "Current price of account in your currency.",
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "title": "Price",
+              "type": "integer",
+              "description": "Current price of account in your currency.",
+              "minimum": 1
+            }
           },
           {
             "name": "currency",
@@ -6139,7 +6150,7 @@
         "tags": [
           "Accounts managing"
         ],
-        "summary": "Bumps Account",
+        "summary": "Bump Account",
         "description": "Bumps account in the search.",
         "operationId": "accountsManaging.bump",
         "parameters": [
@@ -7417,14 +7428,14 @@
       "itemId": {
         "name": "itemId",
         "in": "path",
-        "description": "Item id",
+        "description": "Item id.",
         "required": true,
         "style": "simple",
         "explode": false,
         "schema": {
           "title": "Itemid",
           "type": "integer",
-          "description": "Item id"
+          "description": "Item id."
         }
       },
       "userId": {
