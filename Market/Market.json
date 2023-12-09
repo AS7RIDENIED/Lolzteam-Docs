@@ -3,7 +3,7 @@
   "info": {
     "title": "Lolzteam Public API: Market",
     "description": "\n[Forum API](https://docs.api.zelenka.guru/?forum)\n\n\n**API free libraries**\n\n\n+ [Node.js](https://github.com/NztForum/node-lzt) \n+ [Python](https://github.com/AS7RIDENIED/Lolzteam_Python_Api)\n+ [C#](https://github.com/fanidamn/LolzMarketAPI)\n\n**Rate limit**\n\n\n+ 20 requests per minute (3 seconds delay between per request)\nIf you exceed the limit, the response code 429 will be returned to you.\n\n**Authorization**\n\n\nFor using this api you need to create API Client and get Access Token with **market** scope.\n\n**Content-Type**\n\napplication/x-www-form-urlencoded.\n\nYou can import the API into Postman using [this](https://docs.api.zelenka.guru/swagger/market.json) file.\n\n**Is for free access?**\n\nTo use the market api, you need to have 200 sympathies, or you can purchase monthly subscription [here](https://zelenka.guru/account/upgrades).",
-    "version": "1.1.4"
+    "version": "1.1.5"
   },
   "servers": [
     {
@@ -6529,19 +6529,6 @@
         "operationId": "marketProfileSettings.getSettings",
         "parameters": [
           {
-            "name": "disable_steam_guard",
-            "in": "query",
-            "description": "Disable Steam Guard on account purchase moment.",
-            "required": false,
-            "style": "form",
-            "explode": true,
-            "schema": {
-              "title": "Disable Steam Guard",
-              "type": "boolean",
-              "description": "Disable Steam Guard on account purchase moment."
-            }
-          },
-          {
             "name": "user_allow_ask_discount",
             "in": "query",
             "description": "Allow users ask discount for your accounts.",
@@ -6568,16 +6555,29 @@
             }
           },
           {
-            "name": "allow_accept_accounts",
+            "name": "disable_steam_guard",
             "in": "query",
-            "description": "Usernames who can transfer market accounts to you. Separate values with a comma.",
+            "description": "Disable Steam Guard on account purchase moment.",
             "required": false,
             "style": "form",
             "explode": true,
             "schema": {
-              "title": "Allow Accept Accounts",
-              "type": "string",
-              "description": "Usernames who can transfer market accounts to you. Separate values with a comma."
+              "title": "Disable Steam Guard",
+              "type": "boolean",
+              "description": "Disable Steam Guard on account purchase moment."
+            }
+          },
+          {
+            "name": "deauthorize_steam",
+            "in": "query",
+            "description": "Finish all Steam sessions after purchase.",
+            "required": false,
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "title": "Deathorize Steam",
+              "type": "boolean",
+              "description": "Finish all Steam sessions after purchase."
             }
           },
           {
@@ -6591,6 +6591,32 @@
               "title": "Hide Favourites",
               "type": "boolean",
               "description": "Hide your profile info when you add an account to favorites."
+            }
+          },
+          {
+            "name": "hide_bids",
+            "in": "query",
+            "description": "Hide your profile when bid on the auction.",
+            "required": false,
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "title": "Hide Bids",
+              "type": "boolean",
+              "description": "Hide your profile when bid on the auction."
+            }
+          },
+          {
+            "name": "allow_accept_accounts",
+            "in": "query",
+            "description": "Usernames who can transfer market accounts to you. Separate values with a comma.",
+            "required": false,
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "title": "Allow Accept Accounts",
+              "type": "string",
+              "description": "Usernames who can transfer market accounts to you. Separate values with a comma."
             }
           },
           {
