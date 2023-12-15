@@ -3,7 +3,7 @@
   "info": {
     "title": "Lolzteam Public API: Market",
     "description": "\n[Forum API](https://docs.api.zelenka.guru/?forum)\n\n\n**API free libraries**\n\n\n+ [Node.js](https://github.com/NztForum/node-lzt) \n+ [Python](https://github.com/AS7RIDENIED/Lolzteam_Python_Api)\n+ [C#](https://github.com/fanidamn/LolzMarketAPI)\n\n**Rate limit**\n\n\n+ 20 requests per minute (3 seconds delay between per request)\nIf you exceed the limit, the response code 429 will be returned to you.\n\n**Authorization**\n\n\nFor using this api you need to create API Client and get Access Token with **market** scope.\n\n**Content-Type**\n\napplication/x-www-form-urlencoded.\n\nYou can import the API into Postman using [this](https://docs.api.zelenka.guru/swagger/market.json) file.\n\n**Is for free access?**\n\nTo use the market api, you need to have 200 sympathies, or you can purchase monthly subscription [here](https://zelenka.guru/account/upgrades).",
-    "version": "1.1.5"
+    "version": "1.1.6"
   },
   "servers": [
     {
@@ -868,6 +868,9 @@
           },
           {
             "$ref": "#/components/parameters/valorant_weaponSkin"
+          },
+          {
+            "$ref": "#/components/parameters/valorant_knife"
           },
           {
             "$ref": "#/components/parameters/valorant_buddy"
@@ -3591,7 +3594,7 @@
         "tags": [
           "Accounts managing"
         ],
-        "summary": "Soft Delete Account",
+        "summary": "Delete Account",
         "description": "Deletes your account from public search. Deletion type is soft. You can restore account after deletion if you want.",
         "operationId": "accountsManaging.delete",
         "parameters": [
@@ -3642,9 +3645,9 @@
         "tags": [
           "Accounts managing"
         ],
-        "summary": "Get Steam Value",
-        "description": "Gets steam value.",
-        "operationId": "accountsManaging.getSteamValue",
+        "summary": "Get Steam Inventory Value",
+        "description": "Gets steam inventory value.",
+        "operationId": "accountsManaging.getSteamInventoryValue",
         "parameters": [
           {
             "name": "link",
@@ -3971,6 +3974,44 @@
         ]
       }
     },
+    "/{itemId}/bump": {
+      "post": {
+        "tags": [
+          "Accounts managing"
+        ],
+        "summary": "Bump Account",
+        "description": "Bumps account in the search.",
+        "operationId": "accountsManaging.bump",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/itemId"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MoneyTransferModel"
+                }
+              }
+            }
+          },
+          "403": {
+            "$ref": "#/components/responses/NoPermissionModel"
+          },
+          "404": {
+            "$ref": "#/components/responses/AdNotFoundModel"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ]
+      }
+    },
     "/{itemId}/auction": {
       "get": {
         "tags": [
@@ -4011,9 +4052,9 @@
         "tags": [
           "Auction"
         ],
-        "summary": "Post Auction Bid",
+        "summary": "Place Bid",
         "description": "Create a new auction bid.",
-        "operationId": "auction.postBid",
+        "operationId": "auction.placeBid",
         "parameters": [
           {
             "$ref": "#/components/parameters/itemId"
@@ -4060,7 +4101,7 @@
         "tags": [
           "Auction"
         ],
-        "summary": "Delete Auction Bid",
+        "summary": "Delete Bid",
         "description": "Delete your auction bid. You can delete your auction bid within 5 minutes.",
         "operationId": "auction.deleteBid",
         "parameters": [
@@ -4351,7 +4392,7 @@
           "Account publishing"
         ],
         "summary": "Fast Sell Account",
-        "description": "Adds and check account on validity. If account is valid, account will be published on the market.\n\nAccount origin. Where did you get it from.\n+ brute - Account received using Bruteforce\n+ fishing - Account received from fishing page\n+ stealer - Account received from stealer logs\n+ autoreg - Account is automatically registered by a tool\n+ personal - Account is yours. You created it yourself\n+ resale - Account received from another seller\n+ retrive - Account is recovered by email or phone (only for VKontakte category)\n+ dummy - Dummy (empty) account (only for Steam category)\n\nRequired email login data categories:\n+ 9 - Fortnite\n+ 12 - Epic games\n+ 18 - Escape from Tarkov",
+        "description": "Adds and check account on validity. If account is valid, account will be published on the market.\n\n**If you receive a \"captcha\" error, that you should send same request again.**\n\nAccount origin. Where did you get it from.\n+ brute - Account received using Bruteforce\n+ fishing - Account received from fishing page\n+ stealer - Account received from stealer logs\n+ autoreg - Account is automatically registered by a tool\n+ personal - Account is yours. You created it yourself\n+ resale - Account received from another seller\n+ retrive - Account is recovered by email or phone (only for VKontakte category)\n+ dummy - Dummy (empty) account (only for Steam category)\n\nRequired email login data categories:\n+ 9 - Fortnite\n+ 12 - Epic games\n+ 18 - Escape from Tarkov",
         "operationId": "accountPublishing.fastSell",
         "parameters": [
           {
@@ -4706,7 +4747,7 @@
           {
             "name": "extra[vk_ua]",
             "in": "query",
-            "description": "VK User-agent. Optional. Used only if you want to upload VK account.",
+            "description": "VK User-agent. Used only if you want to upload VK account.",
             "required": false,
             "style": "form",
             "explode": true,
@@ -5326,7 +5367,7 @@
           "Account publishing"
         ],
         "summary": "Check Not Published Acc (Get temp email for account)",
-        "description": "Check and put up to sale not published account OR update account information existing account.",
+        "description": "Check and put up to sale not published account OR update account information existing account.\n\n**If you receive a \"captcha\" error, that you should send same request again.**",
         "operationId": "accountsPublishing.checkNotPublic",
         "parameters": [
           {
@@ -5937,44 +5978,6 @@
         ]
       }
     },
-    "/{itemId}/telegram-reset-authorizations": {
-      "post": {
-        "tags": [
-          "Accounts managing"
-        ],
-        "summary": "Telegram Reset Auth",
-        "description": "Resets Telegram authorizations.",
-        "operationId": "accountsManaging.telegramResetAuth",
-        "parameters": [
-          {
-            "$ref": "#/components/parameters/itemId"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Successful Response.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/SaveChangesModel"
-                }
-              }
-            }
-          },
-          "403": {
-            "$ref": "#/components/responses/NoPermissionModel"
-          },
-          "404": {
-            "$ref": "#/components/responses/AdNotFoundModel"
-          }
-        },
-        "security": [
-          {
-            "HTTPBearer": []
-          }
-        ]
-      }
-    },
     "/{itemId}/telegram-login-code": {
       "get": {
         "tags": [
@@ -6013,12 +6016,50 @@
         ]
       }
     },
+    "/{itemId}/telegram-reset-authorizations": {
+      "post": {
+        "tags": [
+          "Accounts managing"
+        ],
+        "summary": "Telegram Reset Auth",
+        "description": "Resets Telegram authorizations.",
+        "operationId": "accountsManaging.telegramResetAuth",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/itemId"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SaveChangesModel"
+                }
+              }
+            }
+          },
+          "403": {
+            "$ref": "#/components/responses/NoPermissionModel"
+          },
+          "404": {
+            "$ref": "#/components/responses/AdNotFoundModel"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ]
+      }
+    },
     "/{itemId}/refuse-guarantee": {
       "post": {
         "tags": [
           "Accounts managing"
         ],
-        "summary": "Cancel Guarantee Acc",
+        "summary": "Cancel Guarantee",
         "description": "Cancel guarantee of account. It can be useful for account reselling.",
         "operationId": "accountsManaging.cancelGuarantee",
         "parameters": [
@@ -6110,7 +6151,7 @@
         "tags": [
           "Accounts managing"
         ],
-        "summary": "Get Password Temp Email",
+        "summary": "Get Temp Email Password",
         "description": "Gets password from temp email of account. After calling of this method, the warranty will be cancelled and you cannot automatically resell account.",
         "operationId": "accountsManaging.getPasswordEmail",
         "parameters": [
@@ -6125,44 +6166,6 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/TempEmailPasswordModel"
-                }
-              }
-            }
-          },
-          "403": {
-            "$ref": "#/components/responses/NoPermissionModel"
-          },
-          "404": {
-            "$ref": "#/components/responses/AdNotFoundModel"
-          }
-        },
-        "security": [
-          {
-            "HTTPBearer": []
-          }
-        ]
-      }
-    },
-    "/{itemId}/bump": {
-      "post": {
-        "tags": [
-          "Accounts managing"
-        ],
-        "summary": "Bump Account",
-        "description": "Bumps account in the search.",
-        "operationId": "accountsManaging.bump",
-        "parameters": [
-          {
-            "$ref": "#/components/parameters/itemId"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Successful Response.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/MoneyTransferModel"
                 }
               }
             }
@@ -6293,9 +6296,9 @@
         "tags": [
           "Accounts managing"
         ],
-        "summary": "Add Favorite",
-        "description": "Adds account to favourites.",
-        "operationId": "accountsManaging.addFavorite",
+        "summary": "Favorite",
+        "description": "Adds account to favorites.",
+        "operationId": "accountsManaging.favorite",
         "parameters": [
           {
             "$ref": "#/components/parameters/itemId"
@@ -6326,9 +6329,9 @@
         "tags": [
           "Accounts managing"
         ],
-        "summary": "Delete Favorite",
-        "description": "Deletes account from favourites.",
-        "operationId": "accountsManaging.deleteFavorite",
+        "summary": "Unfavorite",
+        "description": "Delete account from favorites.",
+        "operationId": "accountsManaging.unfavorite",
         "parameters": [
           {
             "$ref": "#/components/parameters/itemId"
@@ -7093,7 +7096,7 @@
     "/proxy": {
       "get": {
         "tags": [
-          "Proxy settings"
+          "Proxy"
         ],
         "summary": "Get Proxy",
         "description": "Gets your proxy list.",
@@ -7118,7 +7121,7 @@
       },
       "post": {
         "tags": [
-          "Proxy settings"
+          "Proxy"
         ],
         "summary": "Add Proxy",
         "description": "Add single proxy or proxy list.\n\n\nTo add single proxy use this parameters:\n\n\n+ **proxy_ip** (required) - proxy ip or host\n+ **proxy_port** (required) - proxy port\n+ **proxy_user** (optional) - proxy username\n+ **proxy_pass** (optional) - proxy password\n\nTo add proxy list use this parameters:\n\n\n+ **proxy_row** (required) - proxy list in String format ip:port:user:pass. Each proxy must be start with new line (use \\n separator)",
@@ -7220,7 +7223,7 @@
       },
       "delete": {
         "tags": [
-          "Proxy settings"
+          "Proxy"
         ],
         "summary": "Delete Proxy",
         "description": "Delete single or all proxies.",
@@ -9749,6 +9752,23 @@
           "items": {
             "type": "string"
           }
+        }
+      },
+      "valorant_knife": {
+        "name": "knife",
+        "in": "query",
+        "description": "Has any knife.",
+        "required": false,
+        "style": "form",
+        "explode": true,
+        "schema": {
+          "title": "Knife",
+          "type": "integer",
+          "description": "Has any knife.",
+          "enum": [
+            1,
+            0
+          ]
         }
       },
       "valorant_buddy": {
