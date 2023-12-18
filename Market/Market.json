@@ -3,7 +3,7 @@
   "info": {
     "title": "Lolzteam Public API: Market",
     "description": "\n[Forum API](https://docs.api.zelenka.guru/?forum)\n\n\n**API free libraries**\n\n\n+ [Node.js](https://github.com/NztForum/node-lzt) \n+ [Python](https://github.com/AS7RIDENIED/Lolzteam_Python_Api)\n+ [C#](https://github.com/fanidamn/LolzMarketAPI)\n\n**Rate limit**\n\n\n+ 20 requests per minute (3 seconds delay between per request)\nIf you exceed the limit, the response code 429 will be returned to you.\n\n**Authorization**\n\n\nFor using this api you need to create API Client and get Access Token with **market** scope.\n\n**Content-Type**\n\napplication/x-www-form-urlencoded.\n\nYou can import the API into Postman using [this](https://docs.api.zelenka.guru/swagger/market.json) file.\n\n**Is for free access?**\n\nTo use the market api, you need to have 200 sympathies, or you can purchase monthly subscription [here](https://zelenka.guru/account/upgrades).",
-    "version": "1.1.6"
+    "version": "1.1.7"
   },
   "servers": [
     {
@@ -150,6 +150,24 @@
             "$ref": "#/components/parameters/steam_hours_played_max"
           },
           {
+            "name": "eg",
+            "in": "query",
+            "description": "Guarantee type.\n+ **-1** - 12 hours\n+ **0** - 24 hours\n+ **1** - 3 days",
+            "required": false,
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "title": "Extended Guarantee",
+              "type": "integer",
+              "description": "Guarantee type.\n+ **-1** - 12 hours\n+ **0** - 24 hours\n+ **1** - 3 days",
+              "enum": [
+                -1,
+                0,
+                1
+              ]
+            }
+          },
+          {
             "$ref": "#/components/parameters/steam_vac"
           },
           {
@@ -235,9 +253,6 @@
           },
           {
             "$ref": "#/components/parameters/steam_win_count_max"
-          },
-          {
-            "$ref": "#/components/parameters/steam_medal"
           },
           {
             "$ref": "#/components/parameters/steam_medal_id"
@@ -438,6 +453,25 @@
           },
           {
             "$ref": "#/components/parameters/nsb_by_me"
+          },
+          {
+            "name": "eg",
+            "in": "query",
+            "description": "Guarantee type.\n+ **-1** - 12 hours\n+ **0** - 24 hours\n+ **1** - 3 days\n+ **2** - Guarantee at the time of purchase",
+            "required": false,
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "title": "Extended Guarantee",
+              "type": "integer",
+              "description": "Guarantee type.\n+ **-1** - 12 hours\n+ **0** - 24 hours\n+ **1** - 3 days\n+ **2** - Guarantee at the time of purchase",
+              "enum": [
+                -1,
+                0,
+                1,
+                2
+              ]
+            }
           },
           {
             "$ref": "#/components/parameters/smin"
@@ -1298,6 +1332,25 @@
             "$ref": "#/components/parameters/nsb_by_me"
           },
           {
+            "name": "eg",
+            "in": "query",
+            "description": "Guarantee type.\n+ **-1** - 12 hours\n+ **0** - 24 hours\n+ **1** - 3 days\n+ **2** - Guarantee at the time of purchase",
+            "required": false,
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "title": "Extended Guarantee",
+              "type": "integer",
+              "description": "Guarantee type.\n+ **-1** - 12 hours\n+ **0** - 24 hours\n+ **1** - 3 days\n+ **2** - Guarantee at the time of purchase",
+              "enum": [
+                -1,
+                0,
+                1,
+                2
+              ]
+            }
+          },
+          {
             "$ref": "#/components/parameters/supercell_system"
           },
           {
@@ -1404,7 +1457,7 @@
             "$ref": "#/components/parameters/nsb_by_me"
           },
           {
-            "$ref": "#/components/parameters/game"
+            "$ref": "#/components/parameters/game_int"
           },
           {
             "$ref": "#/components/parameters/country"
@@ -1801,6 +1854,25 @@
             "$ref": "#/components/parameters/nsb_by_me"
           },
           {
+            "name": "eg",
+            "in": "query",
+            "description": "Guarantee type.\n+ **-1** - 12 hours\n+ **0** - 24 hours\n+ **1** - 3 days\n+ **2** - Guarantee at the time of purchase",
+            "required": false,
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "title": "Extended Guarantee",
+              "type": "integer",
+              "description": "Guarantee type.\n+ **-1** - 12 hours\n+ **0** - 24 hours\n+ **1** - 3 days\n+ **2** - Guarantee at the time of purchase",
+              "enum": [
+                -1,
+                0,
+                1,
+                2
+              ]
+            }
+          },
+          {
             "$ref": "#/components/parameters/game"
           },
           {
@@ -2057,7 +2129,7 @@
             "$ref": "#/components/parameters/nsb_by_me"
           },
           {
-            "$ref": "#/components/parameters/game"
+            "$ref": "#/components/parameters/game_int"
           },
           {
             "$ref": "#/components/parameters/country"
@@ -2321,9 +2393,6 @@
           },
           {
             "$ref": "#/components/parameters/discord_not_locale"
-          },
-          {
-            "$ref": "#/components/parameters/discord_badge"
           }
         ],
         "responses": {
@@ -2635,6 +2704,23 @@
           },
           {
             "$ref": "#/components/parameters/nsb_by_me"
+          },
+          {
+            "name": "eg",
+            "in": "query",
+            "description": "Guarantee type.\n+ **-1** - 12 hours\n+ **0** - 24 hours\n+ **1** - 3 days\n+ **2** - Guarantee at the time of purchase",
+            "required": false,
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "title": "Extended Guarantee",
+              "type": "integer",
+              "description": "Guarantee type.\n+ **0** - 24 hours\n+ **1** - 3 days",
+              "enum": [
+                0,
+                1
+              ]
+            }
           },
           {
             "$ref": "#/components/parameters/game"
@@ -4524,18 +4610,19 @@
           {
             "name": "extended_guarantee",
             "in": "query",
-            "description": "Guarantee type.\n+ **-1** - 12 hours\n+ **0** - 24 hours\n+ **1** - 3 days",
+            "description": "Guarantee type.\n+ **-1** - 12 hours\n+ **0** - 24 hours\n+ **1** - 3 days\n+ **2** - Guarantee at the time of purchase",
             "required": false,
             "style": "form",
             "explode": true,
             "schema": {
               "title": "Extended Guarantee",
               "type": "integer",
-              "description": "Guarantee type.\n+ **-1** - 12 hours\n+ **0** - 24 hours\n+ **1** - 3 days.",
+              "description": "Guarantee type.\n+ **-1** - 12 hours\n+ **0** - 24 hours\n+ **1** - 3 days\n+ **2** - Guarantee at the time of purchase",
               "enum": [
                 -1,
                 0,
-                1
+                1,
+                2
               ]
             }
           },
@@ -5215,18 +5302,19 @@
           {
             "name": "extended_guarantee",
             "in": "query",
-            "description": "Guarantee type.\n+ **-1** - 12 hours\n+ **0** - 24 hours\n+ **1** - 3 days",
+            "description": "Guarantee type.\n+ **-1** - 12 hours\n+ **0** - 24 hours\n+ **1** - 3 days\n+ **2** - Guarantee at the time of purchase",
             "required": false,
             "style": "form",
             "explode": true,
             "schema": {
               "title": "Extended Guarantee",
               "type": "integer",
-              "description": "Guarantee type.\n+ **-1** - 12 hours\n+ **0** - 24 hours\n+ **1** - 3 days",
+              "description": "Guarantee type.\n+ **-1** - 12 hours\n+ **0** - 24 hours\n+ **1** - 3 days\n+ **2** - Guarantee at the time of purchase",
               "enum": [
                 -1,
                 0,
-                1
+                1,
+                2
               ]
             }
           },
@@ -7971,14 +8059,15 @@
       "battlenet_real_id": {
         "name": "real_id",
         "in": "query",
-        "description": "Read name.",
+        "description": "Real id.",
         "required": false,
         "style": "form",
         "explode": true,
         "schema": {
           "title": "Real Id",
           "type": "string",
-          "description": "Read name."
+          "description": "Real id.",
+          "$ref": "#/components/schemas/YesNoNoMatterScheme"
         }
       },
       "battlenet_parent_control": {
@@ -8727,6 +8816,7 @@
           "title": "Not Region",
           "type": "array",
           "description": "Exclude region.",
+          "uniqueItems": true,
           "items": {
             "type": "string",
             "enum": [
@@ -10550,7 +10640,7 @@
         }
       },
       "fortnite_dance": {
-        "name": "dance",
+        "name": "dance[]",
         "in": "query",
         "description": "Dances.",
         "required": false,
@@ -10566,7 +10656,7 @@
         }
       },
       "fortnite_glider": {
-        "name": "glider",
+        "name": "glider[]",
         "in": "query",
         "description": "Gliders.",
         "required": false,
@@ -10582,7 +10672,7 @@
         }
       },
       "fortnite_skin": {
-        "name": "skin",
+        "name": "skin[]",
         "in": "query",
         "description": "Skins.",
         "required": false,
@@ -10598,7 +10688,7 @@
         }
       },
       "fortnite_pickaxe": {
-        "name": "pickaxe",
+        "name": "pickaxe[]",
         "in": "query",
         "description": "Pickaxes.",
         "required": false,
@@ -11454,22 +11544,6 @@
           }
         }
       },
-      "steam_medal": {
-        "name": "medal[]",
-        "in": "query",
-        "description": "List of medal names.",
-        "required": false,
-        "style": "form",
-        "explode": true,
-        "schema": {
-          "title": "Medal",
-          "type": "array",
-          "description": "List of medal names.",
-          "items": {
-            "type": "string"
-          }
-        }
-      },
       "steam_win_count_max": {
         "name": "win_count_max",
         "in": "query",
@@ -11765,6 +11839,22 @@
           }
         }
       },
+      "game_int": {
+        "name": "game[]",
+        "in": "query",
+        "description": "List of games.",
+        "required": false,
+        "style": "form",
+        "explode": true,
+        "schema": {
+          "title": "Game",
+          "type": "array",
+          "description": "List of games.",
+          "items": {
+            "type": "integer"
+          }
+        }
+      },
       "steam_hours_played": {
         "name": "hours_played",
         "in": "query",
@@ -11874,7 +11964,13 @@
         "schema": {
           "title": "Rt",
           "description": "Has community ban.",
-          "$ref": "#/components/schemas/YesNoNoMatterScheme"
+          "type": "string",
+          "enum": [
+            "yes",
+            "no",
+            "nomatter"
+          ],
+          "default": "no"
         }
       },
       "steam_trade_ban": {
