@@ -3,7 +3,7 @@
   "info": {
     "title": "Lolzteam Public API: Market",
     "description": "\n[Forum API](https://docs.api.zelenka.guru/?forum)\n\n\n**API free libraries**\n\n\n+ [Node.js](https://github.com/NztForum/node-lzt) \n+ [Python](https://github.com/AS7RIDENIED/Lolzteam_Python_Api)\n+ [C#](https://github.com/fanidamn/LolzMarketAPI)\n\n**Rate limit**\n\n\n+ 20 requests per minute (3 seconds delay between per request)\nIf you exceed the limit, the response code 429 will be returned to you.\n\n**Authorization**\n\n\nFor using this api you need to create API Client and get Access Token with **market** scope.\n\n**Content-Type**\n\napplication/x-www-form-urlencoded.\n\nYou can import the API into Postman using [this](https://docs.api.zelenka.guru/swagger/market.json) file.\n\n**Is for free access?**\n\nTo use the market api, you need to have 200 sympathies, or you can purchase monthly subscription [here](https://zelenka.guru/account/upgrades).",
-    "version": "1.1.7"
+    "version": "1.1.8"
   },
   "servers": [
     {
@@ -141,7 +141,7 @@
             "$ref": "#/components/parameters/nsb_by_me"
           },
           {
-            "$ref": "#/components/parameters/game"
+            "$ref": "#/components/parameters/game_int"
           },
           {
             "$ref": "#/components/parameters/steam_hours_played"
@@ -2723,7 +2723,7 @@
             }
           },
           {
-            "$ref": "#/components/parameters/game"
+            "$ref": "#/components/parameters/game_int"
           },
           {
             "$ref": "#/components/parameters/daybreak"
@@ -2735,6 +2735,9 @@
             "$ref": "#/components/parameters/not_country"
           },
           {
+            "$ref": "#/components/parameters/tel"
+          },
+          {
             "$ref": "#/components/parameters/battlenet_edit_btag"
           },
           {
@@ -2744,13 +2747,7 @@
             "$ref": "#/components/parameters/battlenet_real_id"
           },
           {
-            "$ref": "#/components/parameters/tel"
-          },
-          {
             "$ref": "#/components/parameters/battlenet_parent_control"
-          },
-          {
-            "$ref": "#/components/parameters/cookies"
           },
           {
             "$ref": "#/components/parameters/lmin"
@@ -4627,456 +4624,6 @@
             }
           },
           {
-            "name": "description",
-            "in": "query",
-            "description": "Account public description.",
-            "required": false,
-            "style": "form",
-            "explode": true,
-            "schema": {
-              "title": "Description",
-              "type": "string",
-              "description": "Account public description."
-            }
-          },
-          {
-            "name": "information",
-            "in": "query",
-            "description": "Account private information (visible for buyer only if purchased).",
-            "required": false,
-            "style": "form",
-            "explode": true,
-            "schema": {
-              "title": "Information",
-              "type": "string",
-              "description": "Account private information (visible for buyer only if purchased)."
-            }
-          },
-          {
-            "name": "login",
-            "in": "query",
-            "description": "Account login (or email).",
-            "required": false,
-            "style": "form",
-            "explode": true,
-            "schema": {
-              "title": "Login",
-              "type": "string",
-              "description": "Account login (or email)."
-            }
-          },
-          {
-            "name": "password",
-            "in": "query",
-            "description": "Account password.",
-            "required": false,
-            "style": "form",
-            "explode": true,
-            "schema": {
-              "title": "Password",
-              "type": "string",
-              "description": "Account password."
-            }
-          },
-          {
-            "name": "login_password",
-            "in": "query",
-            "description": "Account login data format login:password.",
-            "required": false,
-            "style": "form",
-            "explode": true,
-            "schema": {
-              "title": "Login Password",
-              "type": "string",
-              "description": "Account login data format login:password."
-            }
-          },
-          {
-            "name": "has_email_login_data",
-            "in": "query",
-            "description": "Required if a **category** is one of list of Required email login data categories.",
-            "required": false,
-            "style": "form",
-            "explode": true,
-            "schema": {
-              "title": "Has Email Login Data",
-              "type": "boolean",
-              "description": "Required if a **category** is one of list of Required email login data categories."
-            }
-          },
-          {
-            "name": "email_login_data",
-            "in": "query",
-            "description": "Required if a **category** is one of list of Required email login data categories. Email login data (login:pass format).",
-            "required": false,
-            "style": "form",
-            "explode": true,
-            "schema": {
-              "title": "Email Login Data",
-              "type": "string",
-              "description": "Required if a **category** is one of list of Required email login data categories. Email login data (login:pass format)."
-            }
-          },
-          {
-            "name": "email_type",
-            "in": "query",
-            "description": "Email type.",
-            "required": false,
-            "style": "form",
-            "explode": true,
-            "schema": {
-              "title": "Email Type",
-              "type": "string",
-              "description": "Email type.",
-              "enum": [
-                "native",
-                "autoreg"
-              ]
-            }
-          },
-          {
-            "name": "close_item",
-            "in": "query",
-            "description": "If set, the item will be closed **item_state = closed**.",
-            "required": false,
-            "style": "form",
-            "explode": true,
-            "schema": {
-              "title": "Close Item",
-              "type": "boolean",
-              "description": "If set, the item will be closed **item_state = closed**."
-            }
-          },
-          {
-            "name": "extra[region]",
-            "in": "query",
-            "description": "Region. Required if you want to upload WoT, Valorant, Escape From Tarkov account. Optional if you want to upload Genshin Impact account.",
-            "required": false,
-            "style": "form",
-            "explode": true,
-            "schema": {
-              "title": "Region",
-              "type": "string",
-              "description": "Region. Required if you want to upload WoT, Valorant, Escape From Tarkov account. Optional if you want to upload Genshin Impact account."
-            }
-          },
-          {
-            "name": "extra[service_id]",
-            "in": "query",
-            "description": "Service id. Required if you want to upload VPN, Cinema account.",
-            "required": false,
-            "style": "form",
-            "explode": true,
-            "schema": {
-              "title": "Service Id",
-              "type": "string",
-              "description": "Service id. Required if you want to upload VPN, Cinema account.",
-              "enum": [
-                "windscribeVPN",
-                "surfsharkVPN",
-                "tunnelbearVPN",
-                "vanishVPN",
-                "zenmateVPN",
-                "zenmateVPNUltimate",
-                "ultraVPN",
-                "hotspotShieldVPN",
-                "xVPN",
-                "holaVPN",
-                "mullvadVPN",
-                "PIAVPN",
-                "AdguardVPN",
-                "pureVPN",
-                "cyberghostVPN",
-                "moretv",
-                "start"
-              ]
-            }
-          },
-          {
-            "name": "extra[system]",
-            "in": "query",
-            "description": "System. Required if you want to upload Supercell account.",
-            "required": false,
-            "style": "form",
-            "explode": true,
-            "schema": {
-              "title": "System",
-              "type": "string",
-              "description": "System. Required if you want to upload Supercell account."
-            }
-          },
-          {
-            "name": "extra[ds_token]",
-            "in": "query",
-            "description": "Discord token. Required if you want to upload Discord account.",
-            "required": false,
-            "style": "form",
-            "explode": true,
-            "schema": {
-              "title": "Discord Token",
-              "type": "string",
-              "description": "Discord token. Required if you want to upload Discord account."
-            }
-          },
-          {
-            "name": "extra[vk_token]",
-            "in": "query",
-            "description": "VK token.",
-            "required": false,
-            "style": "form",
-            "explode": true,
-            "schema": {
-              "title": "VK Token",
-              "type": "string",
-              "description": "VK token. Required if you want to upload VK account."
-            }
-          },
-          {
-            "name": "extra[vk_ua]",
-            "in": "query",
-            "description": "VK User-agent. Used only if you want to upload VK account.",
-            "required": false,
-            "style": "form",
-            "explode": true,
-            "schema": {
-              "title": "VK Token",
-              "type": "string",
-              "description": "VK User-agent. Optional. Used only if you want to upload VK account."
-            }
-          },
-          {
-            "name": "extra[vk_token_auth_only]",
-            "in": "query",
-            "description": "Login into account by token only. Used only if you want to upload VK account.",
-            "required": false,
-            "style": "form",
-            "explode": true,
-            "schema": {
-              "title": "Vk Token Auth Only",
-              "type": "boolean",
-              "description": "Login into account by token only. Used only if you want to upload VK account."
-            }
-          },
-          {
-            "name": "extra[cookies]",
-            "in": "query",
-            "description": "Cookies. Required if you want to upload Youtube, Fortnite, Epic Games, Origin (EA), Social Club, Instagram, TikTok or Warface account.",
-            "required": false,
-            "style": "form",
-            "explode": true,
-            "schema": {
-              "title": "Cookies",
-              "type": "string",
-              "description": "Cookies. Required if you want to upload Youtube, Fortnite, Epic Games, Origin (EA), Social Club, Instagram, TikTok or Warface account."
-            }
-          },
-          {
-            "name": "extra[sc]",
-            "in": "query",
-            "description": "Required if you want to upload Epic Games account.",
-            "required": false,
-            "style": "form",
-            "explode": true,
-            "schema": {
-              "title": "sc",
-              "type": "boolean",
-              "description": "Required if you want to upload Epic Games account."
-            }
-          },
-          {
-            "name": "extra[ItTakesTwo]",
-            "in": "query",
-            "description": "Required if you want to upload Origin (EA) account.",
-            "required": false,
-            "style": "form",
-            "explode": true,
-            "schema": {
-              "title": "ItTakesTwo",
-              "type": "boolean",
-              "description": "Required if you want to upload Origin (EA) account."
-            }
-          },
-          {
-            "name": "extra[login_without_cookies]",
-            "in": "query",
-            "description": "Login without cookies. Required if you want to upload Instagram account.",
-            "required": false,
-            "style": "form",
-            "explode": true,
-            "schema": {
-              "title": "Login Without Cookies",
-              "type": "boolean",
-              "description": "Login without cookies. Required if you want to upload Instagram account."
-            }
-          },
-          {
-            "name": "extra[mfa_file]",
-            "in": "query",
-            "description": "Mfa file. Optional. Used only if you want to upload Steam account.",
-            "required": false,
-            "style": "form",
-            "explode": true,
-            "schema": {
-              "title": "Mfa File",
-              "type": "string",
-              "description": "Mfa file. Optional. Used only if you want to upload Steam account."
-            }
-          },
-          {
-            "name": "extra[dota2_mmr]",
-            "in": "query",
-            "description": "Dota 2 MMR. Optional. Used only if you want to upload Steam account.",
-            "required": false,
-            "style": "form",
-            "explode": true,
-            "schema": {
-              "title": "Dota 2 MMR",
-              "type": "string",
-              "description": "Dota 2 MMR. Optional. Used only if you want to upload Steam account."
-            }
-          },
-          {
-            "name": "extra[ea_games]",
-            "in": "query",
-            "description": "EA Games. Optional. Used only if you want to upload Steam account.",
-            "required": false,
-            "style": "form",
-            "explode": true,
-            "schema": {
-              "title": "EA Games",
-              "type": "boolean",
-              "description": "EA Games. Optional. Used only if you want to upload Steam account."
-            }
-          },
-          {
-            "name": "extra[uplay_games]",
-            "in": "query",
-            "description": "Uplay Games. Optional. Used only if you want to upload Steam account.",
-            "required": false,
-            "style": "form",
-            "explode": true,
-            "schema": {
-              "title": "Uplay Games",
-              "type": "string",
-              "description": "Uplay Games. Optional. Used only if you want to upload Steam account."
-            }
-          },
-          {
-            "name": "extra[the_quarry]",
-            "in": "query",
-            "description": "The quarry. Optional. Used only if you want to upload Steam account.",
-            "required": false,
-            "style": "form",
-            "explode": true,
-            "schema": {
-              "title": "The Quarry",
-              "type": "string",
-              "description": "The quarry. Optional. Used only if you want to upload Steam account."
-            }
-          },
-          {
-            "name": "extra[warframe]",
-            "in": "query",
-            "description": "Warframe. Optional. Used only if you want to upload Steam account.",
-            "required": false,
-            "style": "form",
-            "explode": true,
-            "schema": {
-              "title": "Warframe",
-              "type": "boolean",
-              "description": "Warframe. Optional. Used only if you want to upload Steam account."
-            }
-          },
-          {
-            "name": "extra[ark]",
-            "in": "query",
-            "description": "Ark. Optional. Used only if you want to upload Steam account.",
-            "required": false,
-            "style": "form",
-            "explode": true,
-            "schema": {
-              "title": "Ark",
-              "type": "boolean",
-              "description": "Ark. Optional. Used only if you want to upload Steam account."
-            }
-          },
-          {
-            "name": "extra[socialclub_games]",
-            "in": "query",
-            "description": "Social club games. Optional. Used only if you want to upload Steam account.",
-            "required": false,
-            "style": "form",
-            "explode": true,
-            "schema": {
-              "title": "SocialClub Games",
-              "type": "string",
-              "description": "Social club games. Optional. Used only if you want to upload Steam account."
-            }
-          },
-          {
-            "name": "extra[game_version]",
-            "in": "query",
-            "description": "Game version. Required if you want to upload Escape From Tarkov account.",
-            "required": false,
-            "style": "form",
-            "explode": true,
-            "schema": {
-              "title": "Game Version",
-              "type": "string",
-              "description": "Game version. Required if you want to upload Escape From Tarkov account."
-            }
-          },
-          {
-            "name": "extra[cookie_login]",
-            "in": "query",
-            "description": "Cookie login. Optional. Used only if you want to upload TikTok account.",
-            "required": false,
-            "style": "form",
-            "explode": true,
-            "schema": {
-              "title": "Cookie login",
-              "type": "boolean",
-              "description": "Cookie login. Optional. Used only if you want to upload TikTok account."
-            }
-          },
-          {
-            "name": "extra[checkChannels]",
-            "in": "query",
-            "description": "Check channels. Used only if you want to upload Telegram account.",
-            "required": false,
-            "style": "form",
-            "explode": true,
-            "schema": {
-              "title": "Check Channels",
-              "type": "boolean",
-              "description": "Check channels. Used only if you want to upload Telegram account."
-            }
-          },
-          {
-            "name": "extra[telegramClient]",
-            "in": "query",
-            "description": "Telegram client. Used only if you want to upload Telegram account.",
-            "required": false,
-            "style": "form",
-            "explode": true,
-            "schema": {
-              "$ref": "#/components/schemas/TelegramClientModel"
-            }
-          },
-          {
-            "name": "extra[checkSpam]",
-            "in": "query",
-            "description": "Check spam. Used only if you want to upload Telegram account.",
-            "required": false,
-            "style": "form",
-            "explode": true,
-            "schema": {
-              "title": "Check Spam",
-              "type": "boolean",
-              "description": "Check spam. Used only if you want to upload Telegram account."
-            }
-          },
-          {
             "name": "allow_ask_discount",
             "in": "query",
             "description": "Allow users to ask discount for this account.",
@@ -5119,6 +4666,204 @@
             }
           }
         ],
+        "requestBody": {
+          "required": false,
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "properties": {
+                  "description": {
+                    "description": "Account public description.",
+                    "title": "Description",
+                    "type": "string"
+                  },
+                  "information": {
+                    "description": "Account private information (visible for buyer only if purchased).",
+                    "title": "Information",
+                    "type": "string"
+                  },
+                  "login": {
+                    "description": "Account login (or email).",
+                    "title": "Login",
+                    "type": "string"
+                  },
+                  "password": {
+                    "description": "Account password.",
+                    "title": "Password",
+                    "type": "string"
+                  },
+                  "login_password": {
+                    "description": "Account login data format login:password.",
+                    "title": "Login Password",
+                    "type": "string"
+                  },
+                  "has_email_login_data": {
+                    "description": "Required if a **category** is one of list of Required email login data categories.",
+                    "title": "Has Email Login Data",
+                    "type": "boolean"
+                  },
+                  "email_login_data": {
+                    "description": "Required if a **category** is one of list of Required email login data categories. Email login data (login:pass format).",
+                    "title": "Email Login Data",
+                    "type": "string"
+                  },
+                  "email_type": {
+                    "description": "Email type.",
+                    "title": "Email Type",
+                    "type": "string",
+                    "enum": [
+                      "native",
+                      "autoreg"
+                    ]
+                  },
+                  "close_item": {
+                    "description": "If set, the item will be closed **item_state = closed**.",
+                    "title": "Close Item",
+                    "type": "boolean"
+                  },
+                  "extra[region]": {
+                    "description": "Region. Required if you want to upload WoT, Valorant, Escape From Tarkov account. Optional if you want to upload Genshin Impact account.",
+                    "title": "Region",
+                    "type": "string"
+                  },
+                  "extra[service_id]": {
+                    "description": "Service id. Required if you want to upload VPN, Cinema account.",
+                    "title": "Service Id",
+                    "type": "string",
+                    "enum": [
+                      "windscribeVPN",
+                      "surfsharkVPN",
+                      "tunnelbearVPN",
+                      "vanishVPN",
+                      "zenmateVPN",
+                      "zenmateVPNUltimate",
+                      "ultraVPN",
+                      "hotspotShieldVPN",
+                      "xVPN",
+                      "holaVPN",
+                      "mullvadVPN",
+                      "PIAVPN",
+                      "AdguardVPN",
+                      "pureVPN",
+                      "cyberghostVPN",
+                      "moretv",
+                      "start"
+                    ]
+                  },
+                  "extra[system]": {
+                    "description": "System. Required if you want to upload Supercell account.",
+                    "title": "System",
+                    "type": "string"
+                  },
+                  "extra[ds_token]": {
+                    "description": "Discord token. Required if you want to upload Discord account.",
+                    "title": "Discord Token",
+                    "type": "string"
+                  },
+                  "extra[vk_token]": {
+                    "description": "VK token. Required if you want to upload VK account.",
+                    "title": "VK Token",
+                    "type": "string"
+                  },
+                  "extra[vk_ua]": {
+                    "description": "VK User-agent. Optional. Used only if you want to upload VK account.",
+                    "title": "VK Token",
+                    "type": "string"
+                  },
+                  "extra[vk_token_auth_only]": {
+                    "description": "Login into account by token only. Used only if you want to upload VK account.",
+                    "title": "Vk Token Auth Only",
+                    "type": "boolean"
+                  },
+                  "extra[cookies]": {
+                    "description": "Cookies. Required if you want to upload Youtube, Fortnite, Epic Games, Origin (EA), Social Club, Instagram, TikTok or Warface account.",
+                    "title": "Cookies",
+                    "type": "string"
+                  },
+                  "extra[sc]": {
+                    "description": "Required if you want to upload Epic Games account.",
+                    "title": "sc",
+                    "type": "boolean"
+                  },
+                  "extra[ItTakesTwo]": {
+                    "description": "Required if you want to upload Origin (EA) account.",
+                    "title": "ItTakesTwo",
+                    "type": "boolean"
+                  },
+                  "extra[login_without_cookies]": {
+                    "description": "Login without cookies. Required if you want to upload Instagram account.",
+                    "title": "Login Without Cookies",
+                    "type": "boolean"
+                  },
+                  "extra[mfa_file]": {
+                    "description": "Mfa file. Optional. Used only if you want to upload Steam account.",
+                    "title": "Mfa File",
+                    "type": "string"
+                  },
+                  "extra[dota2_mmr]": {
+                    "description": "Dota 2 MMR. Optional. Used only if you want to upload Steam account.",
+                    "title": "Dota 2 MMR",
+                    "type": "string"
+                  },
+                  "extra[ea_games]": {
+                    "description": "EA Games. Optional. Used only if you want to upload Steam account.",
+                    "title": "EA Games",
+                    "type": "boolean"
+                  },
+                  "extra[uplay_games]": {
+                    "description": "Uplay Games. Optional. Used only if you want to upload Steam account.",
+                    "title": "Uplay Games",
+                    "type": "string"
+                  },
+                  "extra[the_quarry]": {
+                    "description": "The quarry. Optional. Used only if you want to upload Steam account.",
+                    "title": "The Quarry",
+                    "type": "string"
+                  },
+                  "extra[warframe]": {
+                    "description": "Warframe. Optional. Used only if you want to upload Steam account.",
+                    "title": "Warframe",
+                    "type": "boolean"
+                  },
+                  "extra[ark]": {
+                    "description": "Ark. Optional. Used only if you want to upload Steam account.",
+                    "title": "Ark",
+                    "type": "boolean"
+                  },
+                  "extra[socialclub_games]": {
+                    "description": "Social club games. Optional. Used only if you want to upload Steam account.",
+                    "title": "SocialClub Games",
+                    "type": "string"
+                  },
+                  "extra[game_version]": {
+                    "description": "Game version. Required if you want to upload Escape From Tarkov account.",
+                    "title": "Game Version",
+                    "type": "string"
+                  },
+                  "extra[cookie_login]": {
+                    "description": "Cookie login. Optional. Used only if you want to upload TikTok account.",
+                    "title": "Cookie login",
+                    "type": "boolean"
+                  },
+                  "extra[checkChannels]": {
+                    "description": "Check channels. Used only if you want to upload Telegram account.",
+                    "title": "Check Channels",
+                    "type": "boolean"
+                  },
+                  "extra[telegramClient]": {
+                    "description": "Telegram client. Used only if you want to upload Telegram account.",
+                    "$ref": "#/components/schemas/TelegramClientModel"
+                  },
+                  "extra[checkSpam]": {
+                    "description": "Check spam. Used only if you want to upload Telegram account.",
+                    "title": "Check Spam",
+                    "type": "boolean"
+                  }
+                }
+              }
+            }
+          }
+        },
         "responses": {
           "200": {
             "description": "Successful Response.",
@@ -5462,45 +5207,6 @@
             "$ref": "#/components/parameters/itemId"
           },
           {
-            "name": "login",
-            "in": "query",
-            "description": "Account login (or email).",
-            "required": false,
-            "style": "form",
-            "explode": true,
-            "schema": {
-              "title": "Login",
-              "type": "string",
-              "description": "Account login (or email)."
-            }
-          },
-          {
-            "name": "password",
-            "in": "query",
-            "description": "Account password.",
-            "required": false,
-            "style": "form",
-            "explode": true,
-            "schema": {
-              "title": "Password",
-              "type": "string",
-              "description": "Account password."
-            }
-          },
-          {
-            "name": "login_password",
-            "in": "query",
-            "description": "Account login data format login:password.",
-            "required": false,
-            "style": "form",
-            "explode": true,
-            "schema": {
-              "title": "Login Password",
-              "type": "string",
-              "description": "Account login data format login:password."
-            }
-          },
-          {
             "name": "close_item",
             "in": "query",
             "description": "If set, the item will be closed **item_state = closed**.",
@@ -5511,335 +5217,6 @@
               "title": "Close Item",
               "type": "boolean",
               "description": "If set, the item will be closed **item_state = closed**."
-            }
-          },
-          {
-            "name": "extra[region]",
-            "in": "query",
-            "description": "Region. Required if you want to upload WoT, Valorant, Escape From Tarkov account. Optional if you want to upload Genshin Impact account.",
-            "required": false,
-            "style": "form",
-            "explode": true,
-            "schema": {
-              "title": "Region",
-              "type": "string",
-              "description": "Region. Required if you want to upload WoT, Valorant, Escape From Tarkov account. Optional if you want to upload Genshin Impact account."
-            }
-          },
-          {
-            "name": "extra[service_id]",
-            "in": "query",
-            "description": "Service id. Required if you want to upload VPN, Cinema account.",
-            "required": false,
-            "style": "form",
-            "explode": true,
-            "schema": {
-              "title": "Service Id",
-              "type": "string",
-              "description": "Service id. Required if you want to upload VPN, Cinema account.",
-              "enum": [
-                "windscribeVPN",
-                "surfsharkVPN",
-                "tunnelbearVPN",
-                "vanishVPN",
-                "zenmateVPN",
-                "zenmateVPNUltimate",
-                "ultraVPN",
-                "hotspotShieldVPN",
-                "xVPN",
-                "holaVPN",
-                "mullvadVPN",
-                "PIAVPN",
-                "AdguardVPN",
-                "pureVPN",
-                "cyberghostVPN",
-                "moretv",
-                "start"
-              ]
-            }
-          },
-          {
-            "name": "extra[system]",
-            "in": "query",
-            "description": "System. Required if you want to upload Supercell account.",
-            "required": false,
-            "style": "form",
-            "explode": true,
-            "schema": {
-              "title": "System",
-              "type": "string",
-              "description": "System. Required if you want to upload Supercell account."
-            }
-          },
-          {
-            "name": "extra[ds_token]",
-            "in": "query",
-            "description": "Discord token. Required if you want to upload Discord account.",
-            "required": false,
-            "style": "form",
-            "explode": true,
-            "schema": {
-              "title": "Discord Token",
-              "type": "string",
-              "description": "Discord token. Required if you want to upload Discord account."
-            }
-          },
-          {
-            "name": "extra[vk_token]",
-            "in": "query",
-            "description": "VK token.",
-            "required": false,
-            "style": "form",
-            "explode": true,
-            "schema": {
-              "title": "VK Token",
-              "type": "string",
-              "description": "VK token."
-            }
-          },
-          {
-            "name": "extra[vk_ua]",
-            "in": "query",
-            "description": "VK User-agent. Used only if you want to upload VK account.",
-            "required": false,
-            "style": "form",
-            "explode": true,
-            "schema": {
-              "title": "VK Token",
-              "type": "string",
-              "description": "VK User-agent. Used only if you want to upload VK account."
-            }
-          },
-          {
-            "name": "extra[vk_token_auth_only]",
-            "in": "query",
-            "description": "Login into account by token only. Used only if you want to upload VK account.",
-            "required": false,
-            "style": "form",
-            "explode": true,
-            "schema": {
-              "title": "Vk Token Auth Only",
-              "type": "boolean",
-              "description": "Login into account by token only. Used only if you want to upload VK account."
-            }
-          },
-          {
-            "name": "extra[cookies]",
-            "in": "query",
-            "description": "Cookies. Required if you want to upload Youtube, Fortnite, Epic Games, Origin (EA), Social Club, Instagram, TikTok or Warface account.",
-            "required": false,
-            "style": "form",
-            "explode": true,
-            "schema": {
-              "title": "Cookies",
-              "type": "string",
-              "description": "Cookies. Required if you want to upload Youtube, Fortnite, Epic Games, Origin (EA), Social Club, Instagram, TikTok or Warface account."
-            }
-          },
-          {
-            "name": "extra[sc]",
-            "in": "query",
-            "description": "Required if you want to upload Epic Games account.",
-            "required": false,
-            "style": "form",
-            "explode": true,
-            "schema": {
-              "title": "sc",
-              "type": "boolean",
-              "description": "Required if you want to upload Epic Games account."
-            }
-          },
-          {
-            "name": "extra[ItTakesTwo]",
-            "in": "query",
-            "description": "Required if you want to upload Origin (EA) account.",
-            "required": false,
-            "style": "form",
-            "explode": true,
-            "schema": {
-              "title": "ItTakesTwo",
-              "type": "boolean",
-              "description": "Required if you want to upload Origin (EA) account."
-            }
-          },
-          {
-            "name": "extra[login_without_cookies]",
-            "in": "query",
-            "description": "Login without cookies. Required if you want to upload Instagram account.",
-            "required": false,
-            "style": "form",
-            "explode": true,
-            "schema": {
-              "title": "Login Without Cookies",
-              "type": "boolean",
-              "description": "Login without cookies. Required if you want to upload Instagram account."
-            }
-          },
-          {
-            "name": "extra[mfa_file]",
-            "in": "query",
-            "description": "Mfa file. Optional. Used only if you want to upload Steam account.",
-            "required": false,
-            "style": "form",
-            "explode": true,
-            "schema": {
-              "title": "Mfa File",
-              "type": "string",
-              "description": "Mfa file. Optional. Used only if you want to upload Steam account."
-            }
-          },
-          {
-            "name": "extra[dota2_mmr]",
-            "in": "query",
-            "description": "Dota 2 MMR. Optional. Used only if you want to upload Steam account.",
-            "required": false,
-            "style": "form",
-            "explode": true,
-            "schema": {
-              "title": "Dota 2 MMR",
-              "type": "string",
-              "description": "Dota 2 MMR. Optional. Used only if you want to upload Steam account."
-            }
-          },
-          {
-            "name": "extra[ea_games]",
-            "in": "query",
-            "description": "EA Games. Optional. Used only if you want to upload Steam account.",
-            "required": false,
-            "style": "form",
-            "explode": true,
-            "schema": {
-              "title": "EA Games",
-              "type": "boolean",
-              "description": "EA Games. Optional. Used only if you want to upload Steam account."
-            }
-          },
-          {
-            "name": "extra[uplay_games]",
-            "in": "query",
-            "description": "Uplay Games. Optional. Used only if you want to upload Steam account.",
-            "required": false,
-            "style": "form",
-            "explode": true,
-            "schema": {
-              "title": "Uplay Games",
-              "type": "string",
-              "description": "Uplay Games. Optional. Used only if you want to upload Steam account."
-            }
-          },
-          {
-            "name": "extra[the_quarry]",
-            "in": "query",
-            "description": "The quarry. Optional. Used only if you want to upload Steam account.",
-            "required": false,
-            "style": "form",
-            "explode": true,
-            "schema": {
-              "title": "The Quarry",
-              "type": "string",
-              "description": "The quarry. Optional. Used only if you want to upload Steam account."
-            }
-          },
-          {
-            "name": "extra[warframe]",
-            "in": "query",
-            "description": "Warframe. Optional. Used only if you want to upload Steam account.",
-            "required": false,
-            "style": "form",
-            "explode": true,
-            "schema": {
-              "title": "Warframe",
-              "type": "boolean",
-              "description": "Warframe. Optional. Used only if you want to upload Steam account."
-            }
-          },
-          {
-            "name": "extra[ark]",
-            "in": "query",
-            "description": "Ark. Optional. Used only if you want to upload Steam account.",
-            "required": false,
-            "style": "form",
-            "explode": true,
-            "schema": {
-              "title": "Ark",
-              "type": "boolean",
-              "description": "Ark. Optional. Used only if you want to upload Steam account."
-            }
-          },
-          {
-            "name": "extra[socialclub_games]",
-            "in": "query",
-            "description": "Social club games. Optional. Used only if you want to upload Steam account.",
-            "required": false,
-            "style": "form",
-            "explode": true,
-            "schema": {
-              "title": "SocialClub Games",
-              "type": "string",
-              "description": "Social club games. Optional. Used only if you want to upload Steam account."
-            }
-          },
-          {
-            "name": "extra[game_version]",
-            "in": "query",
-            "description": "Game version. Required if you want to upload Escape From Tarkov account.",
-            "required": false,
-            "style": "form",
-            "explode": true,
-            "schema": {
-              "title": "Game Version",
-              "type": "string",
-              "description": "Game version. Required if you want to upload Escape From Tarkov account."
-            }
-          },
-          {
-            "name": "extra[cookie_login]",
-            "in": "query",
-            "description": "Cookie login. Optional. Used only if you want to upload TikTok account.",
-            "required": false,
-            "style": "form",
-            "explode": true,
-            "schema": {
-              "title": "Cookie login",
-              "type": "boolean",
-              "description": "Cookie login. Optional. Used only if you want to upload TikTok account."
-            }
-          },
-          {
-            "name": "extra[checkChannels]",
-            "in": "query",
-            "description": "Check channels. Used only if you want to upload Telegram account.",
-            "required": false,
-            "style": "form",
-            "explode": true,
-            "schema": {
-              "title": "Check Channels",
-              "type": "boolean",
-              "description": "Check channels. Used only if you want to upload Telegram account."
-            }
-          },
-          {
-            "name": "extra[telegramClient]",
-            "in": "query",
-            "description": "Telegram client. Used only if you want to upload Telegram account.",
-            "required": false,
-            "style": "form",
-            "explode": true,
-            "schema": {
-              "$ref": "#/components/schemas/TelegramClientModel"
-            }
-          },
-          {
-            "name": "extra[checkSpam]",
-            "in": "query",
-            "description": "Check spam. Used only if you want to upload Telegram account.",
-            "required": false,
-            "style": "form",
-            "explode": true,
-            "schema": {
-              "title": "Check Spam",
-              "type": "boolean",
-              "description": "Check spam. Used only if you want to upload Telegram account."
             }
           },
           {
@@ -5872,6 +5249,189 @@
             }
           }
         ],
+        "requestBody": {
+          "required": false,
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "properties": {
+                  "login": {
+                    "description": "Account login (or email).",
+                    "title": "Login",
+                    "type": "string"
+                  },
+                  "password": {
+                    "description": "Account password.",
+                    "title": "Password",
+                    "type": "string"
+                  },
+                  "login_password": {
+                    "description": "Account login data format login:password.",
+                    "title": "Login Password",
+                    "type": "string"
+                  },
+                  "has_email_login_data": {
+                    "description": "Required if a **category** is one of list of Required email login data categories.",
+                    "title": "Has Email Login Data",
+                    "type": "boolean"
+                  },
+                  "email_login_data": {
+                    "description": "Required if a **category** is one of list of Required email login data categories. Email login data (login:pass format).",
+                    "title": "Email Login Data",
+                    "type": "string"
+                  },
+                  "email_type": {
+                    "description": "Email type.",
+                    "title": "Email Type",
+                    "type": "string",
+                    "enum": [
+                      "native",
+                      "autoreg"
+                    ]
+                  },
+                  "extra[region]": {
+                    "description": "Region. Required if you want to upload WoT, Valorant, Escape From Tarkov account. Optional if you want to upload Genshin Impact account.",
+                    "title": "Region",
+                    "type": "string"
+                  },
+                  "extra[service_id]": {
+                    "description": "Service id. Required if you want to upload VPN, Cinema account.",
+                    "title": "Service Id",
+                    "type": "string",
+                    "enum": [
+                      "windscribeVPN",
+                      "surfsharkVPN",
+                      "tunnelbearVPN",
+                      "vanishVPN",
+                      "zenmateVPN",
+                      "zenmateVPNUltimate",
+                      "ultraVPN",
+                      "hotspotShieldVPN",
+                      "xVPN",
+                      "holaVPN",
+                      "mullvadVPN",
+                      "PIAVPN",
+                      "AdguardVPN",
+                      "pureVPN",
+                      "cyberghostVPN",
+                      "moretv",
+                      "start"
+                    ]
+                  },
+                  "extra[system]": {
+                    "description": "System. Required if you want to upload Supercell account.",
+                    "title": "System",
+                    "type": "string"
+                  },
+                  "extra[ds_token]": {
+                    "description": "Discord token. Required if you want to upload Discord account.",
+                    "title": "Discord Token",
+                    "type": "string"
+                  },
+                  "extra[vk_token]": {
+                    "description": "VK token. Required if you want to upload VK account.",
+                    "title": "VK Token",
+                    "type": "string"
+                  },
+                  "extra[vk_ua]": {
+                    "description": "VK User-agent. Optional. Used only if you want to upload VK account.",
+                    "title": "VK Token",
+                    "type": "string"
+                  },
+                  "extra[vk_token_auth_only]": {
+                    "description": "Login into account by token only. Used only if you want to upload VK account.",
+                    "title": "Vk Token Auth Only",
+                    "type": "boolean"
+                  },
+                  "extra[cookies]": {
+                    "description": "Cookies. Required if you want to upload Youtube, Fortnite, Epic Games, Origin (EA), Social Club, Instagram, TikTok or Warface account.",
+                    "title": "Cookies",
+                    "type": "string"
+                  },
+                  "extra[sc]": {
+                    "description": "Required if you want to upload Epic Games account.",
+                    "title": "sc",
+                    "type": "boolean"
+                  },
+                  "extra[ItTakesTwo]": {
+                    "description": "Required if you want to upload Origin (EA) account.",
+                    "title": "ItTakesTwo",
+                    "type": "boolean"
+                  },
+                  "extra[login_without_cookies]": {
+                    "description": "Login without cookies. Required if you want to upload Instagram account.",
+                    "title": "Login Without Cookies",
+                    "type": "boolean"
+                  },
+                  "extra[mfa_file]": {
+                    "description": "Mfa file. Optional. Used only if you want to upload Steam account.",
+                    "title": "Mfa File",
+                    "type": "string"
+                  },
+                  "extra[dota2_mmr]": {
+                    "description": "Dota 2 MMR. Optional. Used only if you want to upload Steam account.",
+                    "title": "Dota 2 MMR",
+                    "type": "string"
+                  },
+                  "extra[ea_games]": {
+                    "description": "EA Games. Optional. Used only if you want to upload Steam account.",
+                    "title": "EA Games",
+                    "type": "boolean"
+                  },
+                  "extra[uplay_games]": {
+                    "description": "Uplay Games. Optional. Used only if you want to upload Steam account.",
+                    "title": "Uplay Games",
+                    "type": "string"
+                  },
+                  "extra[the_quarry]": {
+                    "description": "The quarry. Optional. Used only if you want to upload Steam account.",
+                    "title": "The Quarry",
+                    "type": "string"
+                  },
+                  "extra[warframe]": {
+                    "description": "Warframe. Optional. Used only if you want to upload Steam account.",
+                    "title": "Warframe",
+                    "type": "boolean"
+                  },
+                  "extra[ark]": {
+                    "description": "Ark. Optional. Used only if you want to upload Steam account.",
+                    "title": "Ark",
+                    "type": "boolean"
+                  },
+                  "extra[socialclub_games]": {
+                    "description": "Social club games. Optional. Used only if you want to upload Steam account.",
+                    "title": "SocialClub Games",
+                    "type": "string"
+                  },
+                  "extra[game_version]": {
+                    "description": "Game version. Required if you want to upload Escape From Tarkov account.",
+                    "title": "Game Version",
+                    "type": "string"
+                  },
+                  "extra[cookie_login]": {
+                    "description": "Cookie login. Optional. Used only if you want to upload TikTok account.",
+                    "title": "Cookie login",
+                    "type": "boolean"
+                  },
+                  "extra[checkChannels]": {
+                    "description": "Check channels. Used only if you want to upload Telegram account.",
+                    "title": "Check Channels",
+                    "type": "boolean"
+                  },
+                  "extra[telegramClient]": {
+                    "description": "Telegram client. Used only if you want to upload Telegram account.",
+                    "$ref": "#/components/schemas/TelegramClientModel"
+                  },
+                  "extra[checkSpam]": {
+                    "description": "Check spam. Used only if you want to upload Telegram account.",
+                    "title": "Check Spam",
+                    "type": "boolean"
+                  }
+                }
+              }
+            }
+          }
+        },
         "responses": {
           "200": {
             "description": "Successful Response.",
@@ -6703,11 +6263,14 @@
             "description": "Usernames who can transfer market accounts to you. Separate values with a comma.",
             "required": false,
             "style": "form",
-            "explode": true,
+            "explode": false,
             "schema": {
               "title": "Allow Accept Accounts",
-              "type": "string",
-              "description": "Usernames who can transfer market accounts to you. Separate values with a comma."
+              "type": "array",
+              "description": "Usernames who can transfer market accounts to you. Separate values with a comma.",
+              "items": {
+                "type": "string"
+              }
             }
           },
           {
@@ -8073,14 +7636,17 @@
       "battlenet_parent_control": {
         "name": "parent_control",
         "in": "query",
-        "description": "Has enabled parent control.",
+        "description": "Has disabled parent control.",
         "required": false,
         "style": "form",
         "explode": true,
         "schema": {
           "title": "Parent Control",
-          "description": "Has enabled parent control.",
-          "$ref": "#/components/schemas/YesNoNoMatterScheme"
+          "description": "Has disabled parent control.",
+          "type": "integer",
+          "enum": [
+            1
+          ]
         }
       },
       "cookies": {
