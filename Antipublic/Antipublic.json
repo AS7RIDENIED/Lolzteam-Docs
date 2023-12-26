@@ -3,15 +3,15 @@
   "info": {
     "title": "AntiPublic.One API",
     "description": "Official API documentation for AntiPublic MYRZ.\n\nLinks:\n+ Download [AntiPublic](https://antipublic.one/dl/AntiPublic.zip).\n+ AntiPublic [Management](https://zelenka.guru/account/antipublic).",
-    "version": "1.0.5"
+    "version": "1.0.6"
   },
   "servers": [
     {
-      "url": "https://antipublic.one"
+      "url": "https://antipublic.one/api/v2"
     }
   ],
   "paths": {
-    "/api/v2/countLines": {
+    "/countLines": {
       "get": {
         "tags": [
           "Info"
@@ -33,7 +33,7 @@
         }
       }
     },
-    "/api/v2/countLinesPlain": {
+    "/countLinesPlain": {
       "get": {
         "tags": [
           "Info"
@@ -55,7 +55,7 @@
         }
       }
     },
-    "/api/v2/version": {
+    "/version": {
       "get": {
         "tags": [
           "Info"
@@ -77,7 +77,7 @@
         }
       }
     },
-    "/api/v2/checkAccess": {
+    "/checkAccess": {
       "get": {
         "tags": [
           "Check"
@@ -114,7 +114,7 @@
         ]
       }
     },
-    "/api/v2/availableQueries": {
+    "/availableQueries": {
       "get": {
         "tags": [
           "Check"
@@ -151,7 +151,7 @@
         ]
       }
     },
-    "/api/v2/checkLines": {
+    "/checkLines": {
       "post": {
         "tags": [
           "Search"
@@ -159,35 +159,32 @@
         "summary": "Check Lines",
         "description": "Check your lines. Maximum 1000 lines per request.",
         "operationId": "antipublic.checkLines",
-        "parameters": [
-          {
-            "description": "Lines for check, email:password.",
-            "required": true,
-            "schema": {
-              "title": "Lines",
-              "type": "array",
-              "items": {
-                "type": "string"
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "required": [
+                  "lines"
+                ],
+                "properties": {
+                  "insert": {
+                    "description": "Upload private rows to AntiPublic db.",
+                    "title": "Insert",
+                    "type": "boolean"
+                  },
+                  "lines": {
+                    "description": "Lines for check, email:password.",
+                    "title": "Lines",
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  }
+                }
               }
-            },
-            "name": "lines[]",
-            "in": "query"
-          },
-          {
-            "description": "Upload private rows to AntiPublic db.",
-            "required": false,
-            "schema": {
-              "title": "Insert",
-              "type": "string",
-              "enum": [
-                "yes",
-                "no"
-              ]
-            },
-            "name": "insert",
-            "in": "query"
+            }
           }
-        ],
+        },
         "responses": {
           "200": {
             "description": "Successful response",
@@ -217,7 +214,7 @@
         ]
       }
     },
-    "/api/v2/emailSearch": {
+    "/emailSearch": {
       "post": {
         "tags": [
           "Search"
@@ -225,18 +222,24 @@
         "summary": "Email Search",
         "description": "Get passwords for email.",
         "operationId": "antipublic.emailSearch",
-        "parameters": [
-          {
-            "description": "Email or login for search.",
-            "required": true,
-            "schema": {
-              "title": "Email",
-              "type": "string"
-            },
-            "name": "email",
-            "in": "query"
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "required": [
+                  "email"
+                ],
+                "properties": {
+                  "email": {
+                    "description": "Email or login for search.",
+                    "title": "Email",
+                    "type": "string"
+                  }
+                }
+              }
+            }
           }
-        ],
+        },
         "responses": {
           "200": {
             "description": "Successful response",
@@ -266,7 +269,7 @@
         ]
       }
     },
-    "/api/v2/emailPasswords": {
+    "/emailPasswords": {
       "post": {
         "tags": [
           "Plus"
@@ -274,31 +277,33 @@
         "summary": "Email Passwords",
         "description": "Get passwords for emails. AntiPublic Plus subscription required.",
         "operationId": "antipublic.emailPasswords",
-        "parameters": [
-          {
-            "description": "Emails for search.",
-            "required": true,
-            "schema": {
-              "title": "Emails",
-              "type": "array",
-              "items": {
-                "type": "string"
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "required": [
+                  "emails"
+                ],
+                "properties": {
+                  "emails": {
+                    "description": "Emails for search.",
+                    "title": "Emails",
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  "limit": {
+                    "description": "Result limit (per email).",
+                    "title": "Limit",
+                    "type": "integer",
+                    "maximum": 1000
+                  }
+                }
               }
-            },
-            "name": "emails[]",
-            "in": "query"
-          },
-          {
-            "description": "Result limit (per email). The maximum value is 1000.",
-            "required": false,
-            "schema": {
-              "title": "Limit",
-              "type": "integer"
-            },
-            "name": "limit",
-            "in": "query"
+            }
           }
-        ],
+        },
         "responses": {
           "200": {
             "description": "Successful response",
